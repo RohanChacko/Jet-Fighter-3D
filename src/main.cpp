@@ -1,6 +1,7 @@
 #include "main.h"
 #include "timer.h"
 #include "airplane.h"
+#include "floor.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ GLFWwindow *window;
 **************************/
 
 Airplane airplane;
+Floors floors;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -46,18 +48,20 @@ void draw(int x) {
     }
     else
     {
-      b[0] =0;
-      b[1] = 0;
-      b[2] =0;
+      b[0] = 0;
+      b[1] = 2;
+      b[2] = 2;
 
       a[0] = 0;
       a[1] = 0;
-      a[2] = 1;
+      a[2] = 0;
     }
 
     glm::vec3 eye (b[0], b[1], b[2]);
+    // glm::vec3 eye (5*cos(camera_rotation_angle*M_PI/180.0f), 3, 5*sin(camera_rotation_angle*M_PI/180.0f));
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
     glm::vec3 target (a[0], a[1],a[2] );
+    // glm::vec3 target (0,0,0);
     // // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
 
@@ -76,6 +80,7 @@ void draw(int x) {
     glm::mat4 MVP;  // MVP = Projection * View * Model
 
     // Scene render
+    floors.draw(VP);
     airplane.draw(VP);
 }
 
@@ -93,7 +98,7 @@ int tick_input(GLFWwindow *window) {
 
 void tick_elements() {
     airplane.tick();
-    camera_rotation_angle += 1;
+    camera_rotation_angle += 0.7;
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -103,6 +108,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     // Create the models
 
     airplane = Airplane(0, 0, COLOR_RED);
+    floors = Floors(0, 0, COLOR_BLUE);
 
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
@@ -113,7 +119,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     reshapeWindow (window, width, height);
 
     // Background color of the scene
-    glClearColor (COLOR_BACKGROUND.r / 256.0, COLOR_BACKGROUND.g / 256.0, COLOR_BACKGROUND.b / 256.0, 0.0f); // R, G, B, A
+    glClearColor (COLOR_SKYBLUE.r / 256.0, COLOR_SKYBLUE.g / 256.0, COLOR_SKYBLUE.b / 256.0, 0.0f); // R, G, B, A
     glClearDepth (1.0f);
 
     glEnable (GL_DEPTH_TEST);
@@ -128,8 +134,8 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 int main(int argc, char **argv) {
     srand(time(0));
-    int width  = 600;
-    int height = 600;
+    int width  = 1000;
+    int height = 1000;
 
     window = initGLFW(width, height);
 
