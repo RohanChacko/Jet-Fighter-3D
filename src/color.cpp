@@ -13,3 +13,4 @@ const color_t COLOR_PINK = { 	255,20,147};
 const color_t COLOR_SPRING = { 	0, 250, 154 };
 const color_t COLOR_DARKBLUE = { 0, 0, 139 };
 const color_t COLOR_SKYBLUE = { 135, 206, 235};
+const color_t COLOR_BURLYWOOD = { 222, 184, 135 }; //Sand Brown

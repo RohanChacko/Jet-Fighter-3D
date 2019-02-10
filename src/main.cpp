@@ -18,8 +18,9 @@ Floors floors;
 
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
-int set = 0;
+int set = 1;
 Timer t60(1.0 / 60);
+glm::vec3 cam_position;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -30,38 +31,21 @@ void draw(int x) {
     // use the loaded shader program
     // Don't change unless you know what you are doing
     glUseProgram (programID);
-    int a[3];
-    int b[3];
+
     // Eye - Location of camera. Don't change unless you are sure!!
 
     // LEFT ARROW KEY AND RIGHT ARROW KEY CHANGES THE VIEW FROM TOWER VIEW TO INSIDE CUBE VIEW
 
-    if(set == 1)
-    {
-      b[0] =2;
-      b[1] = 3;
-      b[2] =4;
-
-      a[0] = 0;
-      a[1] = 0;
-      a[2] = 0;
-    }
-    else
-    {
-      b[0] = 0;
-      b[1] = 2;
-      b[2] = 2;
-
-      a[0] = 0;
-      a[1] = 0;
-      a[2] = 0;
-    }
-
-    glm::vec3 eye (b[0], b[1], b[2]);
+    // cam_position.z = airplane.position.z - 2;
+    cam_position.y = airplane.position.y + 3;
+    cam_position.z+=airplane.speed;
+    glm::vec3 eye (cam_position.x, cam_position.y, cam_position.z);
+    // cout<<cam_position.x<<" "<<cam_position.y<<" "<< cam_position.z<<endl;
     // glm::vec3 eye (5*cos(camera_rotation_angle*M_PI/180.0f), 3, 5*sin(camera_rotation_angle*M_PI/180.0f));
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
-    glm::vec3 target (a[0], a[1],a[2] );
-    // glm::vec3 target (0,0,0);
+
+    glm::vec3 target (airplane.position.x, airplane.position.y, airplane.position.z);
+
     // // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
 
@@ -87,17 +71,67 @@ void draw(int x) {
 int tick_input(GLFWwindow *window) {
     int left  = glfwGetKey(window, GLFW_KEY_LEFT);
     int right = glfwGetKey(window, GLFW_KEY_RIGHT);
+    int up = glfwGetKey(window, GLFW_KEY_UP);
+    int down = glfwGetKey(window, GLFW_KEY_DOWN);
+    int speed_up = glfwGetKey(window, GLFW_KEY_W);
+    int speed_down = glfwGetKey(window, GLFW_KEY_S);
+    int pitch = glfwGetKey(window, GLFW_KEY_SPACE);
+    int yaw_left = glfwGetKey(window, GLFW_KEY_A);
+    int yaw_right = glfwGetKey(window, GLFW_KEY_D);
+    int roll_left = glfwGetKey(window, GLFW_KEY_Q);
+    int roll_right = glfwGetKey(window, GLFW_KEY_E);
+
     if (left) {
-      set = 1;
+      cam_position.x+=0.03;
     }
     else if(right){
-      set =  2;
+      cam_position.x-=0.03;
     }
-    return set;
+    else if(up){
+      cam_position.z+=0.03;
+    }
+    else if(!up && cam_position.z > airplane.position.z - 2){
+      cam_position.z-=0.03;
+    }
+
+    else if(speed_up){
+      airplane.speed+=0.001;
+    }
+    else if(speed_down && airplane.speed>0.005){
+      airplane.speed-=0.001;
+    }
+
+    else if(pitch){
+      set = 1;
+      return 1;
+    }
+    else if(yaw_left)
+    {
+      set = 2;
+      return set;
+    }
+    else if(yaw_right)
+    {
+      set = -2;
+      return set;
+    }
+
+    if(roll_right)
+    {
+      set = 3;
+      return set;
+    }
+    else if(roll_left)
+    {
+      set = -3;
+      return set;
+    }
+    return INT_MIN;
 }
 
-void tick_elements() {
-    airplane.tick();
+void tick_elements(int move) {
+    airplane.tick(move);
+    floors.tick(airplane.speed);
     camera_rotation_angle += 0.7;
 }
 
@@ -107,7 +141,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    airplane = Airplane(0, 0, COLOR_RED);
+    airplane = Airplane(0, 5, COLOR_RED);
     floors = Floors(0, 0, COLOR_BLUE);
 
     // Create and compile our GLSL program from the shaders
@@ -119,7 +153,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     reshapeWindow (window, width, height);
 
     // Background color of the scene
-    glClearColor (COLOR_SKYBLUE.r / 256.0, COLOR_SKYBLUE.g / 256.0, COLOR_SKYBLUE.b / 256.0, 0.0f); // R, G, B, A
+    glClearColor (COLOR_BURLYWOOD.r / 256.0, COLOR_BURLYWOOD.g / 256.0, COLOR_BURLYWOOD.b / 256.0, 0.0f); // R, G, B, A
     glClearDepth (1.0f);
 
     glEnable (GL_DEPTH_TEST);
@@ -136,6 +170,11 @@ int main(int argc, char **argv) {
     srand(time(0));
     int width  = 1000;
     int height = 1000;
+    //Camera view Initialize
+
+    cam_position.x = 0;
+    cam_position.y = 6;
+    cam_position.z = -4;
 
     window = initGLFW(width, height);
 
@@ -152,8 +191,8 @@ int main(int argc, char **argv) {
             // Swap Frame Buffer in double buffering
             glfwSwapBuffers(window);
 
-            tick_elements();
             int x = tick_input(window);
+            tick_elements(x);
             draw(x);
         }
 
@@ -174,5 +213,5 @@ void reset_screen() {
     float bottom = screen_center_y - 4 / screen_zoom;
     float left   = screen_center_x - 4 / screen_zoom;
     float right  = screen_center_x + 4 / screen_zoom;
-    Matrices.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
+    Matrices.projection = glm::perspective(90.0f, 1.0f, 0.001f, 100.0f);
 }

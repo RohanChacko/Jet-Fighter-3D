@@ -3,12 +3,16 @@
 
 Airplane::Airplane(float xs, float ys, color_t color) {
     this->position = glm::vec3(xs, ys, 0);
-    this->rotation = 0;
-    speed = 1;
+    this->rotation_x = 0;
+    this->rotation_z = 0;
+    this->rotation_y = 0;
+    speed = 0.005;
     int stackCount = 100;
     int sectorCount = 100;
     static GLfloat g_vertex_buffer_data[100000];
     int n = 0;
+    int ticker = 0;
+    rotate_sign[0] = rotate_sign[1] = rotate_sign[2] = 0;
 
   float x1, y1, z, xy;                              // vertex position
   float radius = 2.9;    // vertex normal
@@ -70,9 +74,7 @@ Airplane::Airplane(float xs, float ys, color_t color) {
     {
         x[i] = scale_x*cos(2*3.14*i/10);
         y[i] = scale_x*sin(2*3.14*i/10);
-
     }
-
 
     for(int i = 0; i < 10; ++i)
 
@@ -210,8 +212,6 @@ Airplane::Airplane(float xs, float ys, color_t color) {
     g_vertex_buffer_data[1303] = -0.15;
     g_vertex_buffer_data[1304] = -2;
 
-
-
     g_vertex_buffer_data[1305] = 0;
     g_vertex_buffer_data[1306] = -0.15;
     g_vertex_buffer_data[1307] = 1.5;
@@ -223,8 +223,6 @@ Airplane::Airplane(float xs, float ys, color_t color) {
     g_vertex_buffer_data[1311] = 0;
     g_vertex_buffer_data[1312] = -0.15;
     g_vertex_buffer_data[1313] = 0.5;
-
-
 
     g_vertex_buffer_data[1314] = 0;
     g_vertex_buffer_data[1315] = -0.15;
@@ -258,21 +256,59 @@ Airplane::Airplane(float xs, float ys, color_t color) {
 void Airplane::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
-    glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(1, 0, 0));
+    glm::mat4 rotate_x    = glm::rotate((float) (this->rotation_x * M_PI / 180.0f), glm::vec3(1,0,0));
+    glm::mat4 rotate_z    = glm::rotate((float) (this->rotation_z * M_PI / 180.0f), glm::vec3(0,0,1));
+    glm::mat4 rotate_y    = glm::rotate((float) (this->rotation_y * M_PI / 180.0f), glm::vec3(0,1,0));
     // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
     // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
-    Matrices.model *= (translate * rotate);
+    Matrices.model *= (translate * rotate_x*rotate_z*rotate_y);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object);
 }
 
-void Airplane::set_position(float x, float y) {
-    this->position = glm::vec3(x, y, 0);
+void Airplane::set_position(float x, float y, float z) {
+    this->position = glm::vec3(x, y, z);
 }
 
-void Airplane::tick() {
+void Airplane::tick(int move) {
     // this->rotation += speed;
-    // this->position.x -= speed;
+    this->position.z += speed;
+    ticker++;
     // this->position.y -= speed;
+
+    if(move == 1){
+      if(this->rotation_x >-15)
+        this->rotation_x += (-1*0.5);
+
+
+      this->position.y+=speed;
+    }
+    else
+    {
+      if(this->rotation_x < 15)
+        this->rotation_x -= (-1* 0.6);
+      this->position.y-=speed;
+    }
+
+    if(move == 2)
+    {
+      if(this->rotation_z >-30)
+        this->rotation_z += (-1*0.5);
+    }
+    else if(move == -2)
+    {
+      if(this->rotation_z < 30)
+        this->rotation_z -= (-1*0.5);
+    }
+
+    if(move == 3)
+    {
+      this->rotation_y += (-1*0.5);
+    }
+    else if(move == -3)
+    {
+      this->rotation_y -= (-1*0.5);
+    }
+    // std::cout<<move<<" "<<this->position.y<<"\n";
 }
