@@ -98,7 +98,11 @@ void Enemy::draw(glm::mat4 VP) {
 
 void Enemy::tick(glm::vec3 position_plane) {
 
-  if(!this->toggle_missile)
+  if( !this->toggle_missile &&
+      abs(this->position.x) - abs(position_plane.x) < 10.0 &&
+      abs(this->position.y) - abs(position_plane.y) < 10.0 &&
+      abs(this->position.z) - abs(position_plane.z) < 10.0
+    )
   {
     this->toggle_missile = 1;
     this->position_missile = this->position;

@@ -3,6 +3,7 @@
 #include "airplane.h"
 #include "floor.h"
 #include "enemy.h"
+#include "checkpoint.h"
 
 using namespace std;
 
@@ -17,7 +18,10 @@ GLFWwindow *window;
 /* Object Declaration */
 Airplane airplane;
 Floors floors;
-Enemy enemy[3000];
+Checkpoint checkpoint;
+Enemy enemy[500];
+
+
 int enemy_count = 0;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
@@ -72,7 +76,7 @@ void draw(int x) {
     // Scene render
     floors.draw(VP);
     airplane.draw(VP);
-
+    checkpoint.draw(VP);
     for(int i = 0;i < enemy_count; ++i)
     {
       enemy[i].draw(VP);
@@ -144,6 +148,7 @@ int tick_input(GLFWwindow *window) {
 void tick_elements(int move) {
     airplane.tick(move);
     floors.tick(airplane.speed);
+    checkpoint.tick();
 
     for(int i = 0;i < enemy_count; ++i)
     {
@@ -154,11 +159,12 @@ void tick_elements(int move) {
 
     int random = rand();
 
-    if(random % 2 == 0 && enemy_count < 3000)
+    if(random % 2 == 0 && enemy_count < 500)
     {
       enemy[enemy_count++] = Enemy(rand()%1000 - 500 , 0, rand()%1000 - 500, COLOR_RED);
     }
-    cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
+    // cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
+    cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
 
 }
 
@@ -170,7 +176,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     airplane = Airplane(0, 5, 0, COLOR_RED);
     floors = Floors(0, 0, COLOR_BLUE);
-
+    checkpoint = Checkpoint(0, 10, -10,COLOR_BLACK);
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
     // Get a handle for our "MVP" uniform

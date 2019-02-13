@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/graphics_asgn2.dir/src/color.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/floor.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o"
+  "CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/input.cpp.o"
   "graphics_asgn2.pdb"
   "graphics_asgn2"

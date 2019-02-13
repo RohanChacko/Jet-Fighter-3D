@@ -5,6 +5,10 @@ CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o: ../src/airplane.cpp
 CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o: ../src/airplane.h
 CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o: ../src/main.h
 
+CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o: ../src/checkpoint.cpp
+CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o: ../src/checkpoint.h
+CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o: ../src/main.h
+
 CMakeFiles/graphics_asgn2.dir/src/color.cpp.o: ../src/color.cpp
 CMakeFiles/graphics_asgn2.dir/src/color.cpp.o: ../src/main.h
 
@@ -20,6 +24,7 @@ CMakeFiles/graphics_asgn2.dir/src/input.cpp.o: ../src/input.cpp
 CMakeFiles/graphics_asgn2.dir/src/input.cpp.o: ../src/main.h
 
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/airplane.h
+CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/checkpoint.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/enemy.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/floor.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/main.cpp

@@ -150,6 +150,33 @@ src/airplane.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.s
 .PHONY : src/airplane.cpp.s
 
+src/checkpoint.o: src/checkpoint.cpp.o
+
+.PHONY : src/checkpoint.o
+
+# target to build an object file
+src/checkpoint.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o
+.PHONY : src/checkpoint.cpp.o
+
+src/checkpoint.i: src/checkpoint.cpp.i
+
+.PHONY : src/checkpoint.i
+
+# target to preprocess a source file
+src/checkpoint.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.i
+.PHONY : src/checkpoint.cpp.i
+
+src/checkpoint.s: src/checkpoint.cpp.s
+
+.PHONY : src/checkpoint.s
+
+# target to generate assembly for a file
+src/checkpoint.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.s
+.PHONY : src/checkpoint.cpp.s
+
 src/color.o: src/color.cpp.o
 
 .PHONY : src/color.o
@@ -378,6 +405,9 @@ help:
 	@echo "... src/airplane.o"
 	@echo "... src/airplane.i"
 	@echo "... src/airplane.s"
+	@echo "... src/checkpoint.o"
+	@echo "... src/checkpoint.i"
+	@echo "... src/checkpoint.s"
 	@echo "... src/color.o"
 	@echo "... src/color.i"
 	@echo "... src/color.s"
