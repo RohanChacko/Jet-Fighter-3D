@@ -7,7 +7,7 @@
 class Airplane {
 public:
     Airplane() {}
-    Airplane(float x, float y, color_t color);
+    Airplane(float x, float y, float z, color_t color);
     glm::vec3 position;
     float rotation_x;
     float rotation_z;
@@ -18,7 +18,8 @@ public:
     void tick(int move);
     double speed;
     int ticker;
-    int rotate_sign[3];
+    glm::mat4 orc;
+
 private:
     VAO *object;
     VAO *structure;

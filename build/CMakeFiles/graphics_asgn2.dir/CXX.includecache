@@ -20,6 +20,18 @@ main.h
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.cpp
+enemy.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/floor.cpp
 floor.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/floor.h
@@ -63,6 +75,8 @@ airplane.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.h
 floor.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/floor.h
+enemy.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.h
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 iostream
@@ -72,6 +86,8 @@ cmath
 fstream
 -
 vector
+-
+stdlib.h
 -
 GL/glew.h
 -

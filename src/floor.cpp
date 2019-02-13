@@ -7,13 +7,13 @@ Floors::Floors(float x, float y,color_t color) {
     this->rotation = 0;
 
     static const GLfloat vertex_buffer_data[] = {
-        0.0f, 0.0f, 1000.0f, // triangle 1 : begin
-        0.0f, 0.0f, -1000.0f,
-        1000.0f, 0.0f, -1000.0f, // triangle 1 : end
+        -500.0f, 0.0f, 500.0f, // triangle 1 : begin
+        -500.0f, 0.0f, -500.0f,
+         500.0f, 0.0f, -500.0f, // triangle 1 : end
 
-        0.0f, 0.0f, 1000.0f, // triangle 2 : begin
-         1000.0f, 0.0f, 1000.0f,
-        1000.0f, 0.0f, -1000.0f, // triangle 2 : end
+        -500.0f, 0.0f, 500.0f, // triangle 2 : begin
+         500.0f, 0.0f, 500.0f,
+        500.0f, 0.0f, -500.0f, // triangle 2 : end
     };
 
     this->object = create3DObject(GL_TRIANGLES, 2*3, vertex_buffer_data, color, GL_FILL);
@@ -33,7 +33,7 @@ void Floors::draw(glm::mat4 VP) {
 
 void Floors::tick(float speed) {
     // this->rotation += speed;
-    this->position.z += speed;
+    // this->position.z += speed;
     // this->position.y -= speed;
 }
 

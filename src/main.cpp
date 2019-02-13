@@ -2,6 +2,7 @@
 #include "timer.h"
 #include "airplane.h"
 #include "floor.h"
+#include "enemy.h"
 
 using namespace std;
 
@@ -13,9 +14,11 @@ GLFWwindow *window;
 * Customizable functions *
 **************************/
 
+/* Object Declaration */
 Airplane airplane;
 Floors floors;
-
+Enemy enemy[3000];
+int enemy_count = 0;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 int set = 1;
@@ -38,7 +41,10 @@ void draw(int x) {
 
     // cam_position.z = airplane.position.z - 2;
     cam_position.y = airplane.position.y + 3;
-    cam_position.z+=airplane.speed;
+    cam_position.x = airplane.position.x;
+    cam_position.z = airplane.position.z + 3;
+    // cam_position.z+=airplane.speed;
+    // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
     glm::vec3 eye (cam_position.x, cam_position.y, cam_position.z);
     // cout<<cam_position.x<<" "<<cam_position.y<<" "<< cam_position.z<<endl;
     // glm::vec3 eye (5*cos(camera_rotation_angle*M_PI/180.0f), 3, 5*sin(camera_rotation_angle*M_PI/180.0f));
@@ -66,6 +72,12 @@ void draw(int x) {
     // Scene render
     floors.draw(VP);
     airplane.draw(VP);
+
+    for(int i = 0;i < enemy_count; ++i)
+    {
+      enemy[i].draw(VP);
+    }
+
 }
 
 int tick_input(GLFWwindow *window) {
@@ -90,7 +102,7 @@ int tick_input(GLFWwindow *window) {
     else if(up){
       cam_position.z+=0.03;
     }
-    else if(!up && cam_position.z > airplane.position.z - 2){
+    else if(down){
       cam_position.z-=0.03;
     }
 
@@ -132,7 +144,22 @@ int tick_input(GLFWwindow *window) {
 void tick_elements(int move) {
     airplane.tick(move);
     floors.tick(airplane.speed);
+
+    for(int i = 0;i < enemy_count; ++i)
+    {
+      enemy[i].tick(airplane.position);
+    }
+
     camera_rotation_angle += 0.7;
+
+    int random = rand();
+
+    if(random % 2 == 0 && enemy_count < 3000)
+    {
+      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , 0, rand()%1000 - 500, COLOR_RED);
+    }
+    cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
+
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -141,7 +168,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    airplane = Airplane(0, 5, COLOR_RED);
+    airplane = Airplane(0, 5, 0, COLOR_RED);
     floors = Floors(0, 0, COLOR_BLUE);
 
     // Create and compile our GLSL program from the shaders
@@ -213,5 +240,5 @@ void reset_screen() {
     float bottom = screen_center_y - 4 / screen_zoom;
     float left   = screen_center_x - 4 / screen_zoom;
     float right  = screen_center_x + 4 / screen_zoom;
-    Matrices.projection = glm::perspective(90.0f, 1.0f, 0.001f, 100.0f);
+    Matrices.projection = glm::perspective(90.0f, 1.0f, 0.01f, 1000.0f);
 }

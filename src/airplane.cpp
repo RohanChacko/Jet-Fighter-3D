@@ -1,18 +1,32 @@
 #include "airplane.h"
 #include "main.h"
 
-Airplane::Airplane(float xs, float ys, color_t color) {
+Airplane::Airplane(float xs, float ys, float zs, color_t color) {
     this->position = glm::vec3(xs, ys, 0);
     this->rotation_x = 0;
     this->rotation_z = 0;
     this->rotation_y = 0;
-    speed = 0.005;
+
+    this->orc[0][0] = 1;
+    this->orc[0][1] = 0;
+    this->orc[0][2] = 0;
+
+    this->orc[1][0] = 0;
+    this->orc[1][1] = 1;
+    this->orc[1][2] = 0;
+
+    this->orc[2][0] = 0;
+    this->orc[2][1] = 0;
+    this->orc[2][2] = 1;
+
+    speed = 0.05;
     int stackCount = 100;
     int sectorCount = 100;
     static GLfloat g_vertex_buffer_data[100000];
     int n = 0;
     int ticker = 0;
-    rotate_sign[0] = rotate_sign[1] = rotate_sign[2] = 0;
+    orc *= speed;
+
 
   float x1, y1, z, xy;                              // vertex position
   float radius = 2.9;    // vertex normal
@@ -248,7 +262,11 @@ Airplane::Airplane(float xs, float ys, color_t color) {
     g_vertex_buffer_data[1330] = -0.15;
     g_vertex_buffer_data[1331] = 0.1;
 
-    this->object    = create3DObject(GL_TRIANGLES, 420 + 12 + 12, g_vertex_buffer_data, COLOR_GOLD, GL_FILL);
+    for(int i = 2;i<1332;i+=3)
+    {
+      g_vertex_buffer_data[i]*=-1;
+    }
+    this->object = create3DObject(GL_TRIANGLES, 420 + 12 + 12, g_vertex_buffer_data, COLOR_GOLD, GL_FILL);
     // this->structure = create3DObject(GL_TRIANGLES, 420 + 12 + 12, g_vertex_buffer_data, COLOR_BLACK, GL_LINE);
     // this->object = create3DObject(GL_TRIANGLES,882, vertex_buffer_data, color, GL_FILL);
 }
@@ -256,12 +274,14 @@ Airplane::Airplane(float xs, float ys, color_t color) {
 void Airplane::draw(glm::mat4 VP) {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
-    glm::mat4 rotate_x    = glm::rotate((float) (this->rotation_x * M_PI / 180.0f), glm::vec3(1,0,0));
-    glm::mat4 rotate_z    = glm::rotate((float) (this->rotation_z * M_PI / 180.0f), glm::vec3(0,0,1));
-    glm::mat4 rotate_y    = glm::rotate((float) (this->rotation_y * M_PI / 180.0f), glm::vec3(0,1,0));
-    // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
+    glm::mat4 pitch    = glm::rotate((float) (this->rotation_x * M_PI / 180.0f), glm::vec3(1,0,0));
+    glm::mat4 yaw    = glm::rotate((float) (this->rotation_z * M_PI / 180.0f), glm::vec3(0,0,1));
+    glm::mat4 roll    = glm::rotate((float) (this->rotation_y * M_PI / 180.0f), glm::vec3(0,1,0));
+
+    // No need as coords centered at 0, 0, 0 of cube arouund which we want to rotate
     // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
-    Matrices.model *= (translate * rotate_x*rotate_z*rotate_y);
+    // Matrices.model *= initial;
+    Matrices.model *= (translate * roll*pitch*yaw);
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object);
@@ -273,42 +293,68 @@ void Airplane::set_position(float x, float y, float z) {
 
 void Airplane::tick(int move) {
     // this->rotation += speed;
-    this->position.z += speed;
+
     ticker++;
+
     // this->position.y -= speed;
 
     if(move == 1){
-      if(this->rotation_x >-15)
-        this->rotation_x += (-1*0.5);
-
-
+      if(this->rotation_x < 15)
+        this->rotation_x += (1*0.5);
       this->position.y+=speed;
     }
     else
     {
-      if(this->rotation_x < 15)
-        this->rotation_x -= (-1* 0.6);
-      this->position.y-=speed;
+      if(this->rotation_x >- 15)
+        this->rotation_x -= (1* 0.6);
+
+      if(this->position.y >=1)
+        this->position.y-=speed;
     }
 
     if(move == 2)
     {
-      if(this->rotation_z >-30)
-        this->rotation_z += (-1*0.5);
+      // std::cout<<"first "<<this->rotation_z<<"\n";
+      if(this->rotation_z < 30)
+        {
+          this->rotation_z += (1*0.5);
+          // this->position.x = this->position.z*sinf(this->rotation_z * M_PI/180.0);
+        }
     }
     else if(move == -2)
     {
-      if(this->rotation_z < 30)
-        this->rotation_z -= (-1*0.5);
+      // std::cout<<"second "<<this->rotation_z<<"\n";
+      if(this->rotation_z >- 30)
+      {
+        this->rotation_z -= (1*0.5);
+        // this->position.x = this->position.z*sinf(this->rotation_z * M_PI/180.0);
+      }
     }
 
     if(move == 3)
     {
       this->rotation_y += (-1*0.5);
+      orc *= glm::rotate((float) (this->rotation_y * M_PI / 180.0f), glm::vec3(0,1,0));
     }
     else if(move == -3)
     {
       this->rotation_y -= (-1*0.5);
+      orc *= glm::rotate((float) (this->rotation_y * M_PI / 180.0f), glm::vec3(0,1,0));
     }
+
+
+    // int i,j;
+    // for(i = 0;i<3;++i)
+    // {
+    //   for(j = 0;j<3;++j)
+    //   std::cout<<orc[i][j]<<" ";
+    //   std::cout<<orc[i][j]<<"\n\n\n";
+    // }
+
+    // this->position.x += orc[0][0];
+    //this->position.y += orc[1][1];
+    // this->position.z += orc[2][2];
+    this->position.x -= speed*sinf(this->rotation_y * M_PI/180.0);
+    this->position.z -= speed*cosf(this->rotation_y * M_PI/180.0);
     // std::cout<<move<<" "<<this->position.y<<"\n";
 }
