@@ -5,7 +5,7 @@
 Floors::Floors(float x, float y,color_t color) {
     this->position = glm::vec3(x, y, 0);
     this->rotation = 0;
-
+    this->toggle_bit = -1;
     static const GLfloat vertex_buffer_data[] = {
         -500.0f, 0.0f, 500.0f, // triangle 1 : begin
         -500.0f, 0.0f, -500.0f,
@@ -34,7 +34,16 @@ void Floors::draw(glm::mat4 VP) {
 void Floors::tick(float speed) {
     // this->rotation += speed;
     // this->position.z += speed;
-    // this->position.y -= speed;
+    this->position.y += toggle_bit*0.08;
+
+    if(this->position.y <= -2.5)
+    {
+      toggle_bit*=-1;
+    }
+    else if(this->position.y >= 1.5)
+    {
+      toggle_bit*=-1;
+    }
 }
 
 void Floors::set_position(float x, float y) {

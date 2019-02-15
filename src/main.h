@@ -15,6 +15,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#define MAX_CHECKPOINT_COUNT 10
+#define MAX_ENEMY_COUNT 500
 struct color_t {
     int r;
     int g;

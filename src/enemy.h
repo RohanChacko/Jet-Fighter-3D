@@ -19,6 +19,9 @@ public:
     int toggle_missile;
     glm::vec3 position_missile;
     glm::vec3 recorded_position_plane;
+    int pass_x;
+    
+    int pass_z;
 private:
     VAO *object_enemy;
     VAO *object_missile;

@@ -6,7 +6,9 @@ Enemy::Enemy(float x, float y, float z,color_t color) {
     this->position = glm::vec3(x, y, z);
     this->rotation = 0;
     this->toggle_missile = 0;
+    this->pass_x = INT_MIN;
 
+    this->pass_z = INT_MIN;
     static const GLfloat vertex_buffer_data[] = {
         -0.5f, 0.0f, 0.5f, // triangle 1 : begin
         -0.5f, 0.0f, -0.5f,
@@ -65,10 +67,10 @@ void Enemy::draw_missile(glm::mat4 VP)
   Matrices.model = glm::mat4(1.0f);
   glm::mat4 translate = glm::translate (this->position_missile);    // glTranslatef
   float rotation_mis;
-  if(abs(this->recorded_position_plane.z) - abs(this->position_missile.z) == 0)
+  if(abs(this->recorded_position_plane.z) - abs(this->position.z) == 0)
     rotation_mis = 90*M_PI/180.0f;
   else
-    rotation_mis = atanf((abs(this->recorded_position_plane.y) - abs(this->position_missile.y))/(abs(this->recorded_position_plane.z) - abs(this->position_missile.z) ));
+    rotation_mis = atanf((abs(this->recorded_position_plane.y) - abs(this->position.y))/(abs(this->recorded_position_plane.z) - abs(this->position.z) ));
 
   glm::mat4 rotate    = glm::rotate((float)(rotation_mis ), glm::vec3(1, 0, 0));
   // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
@@ -110,12 +112,15 @@ void Enemy::tick(glm::vec3 position_plane) {
   }
   else
   {
-    if(this->position_missile.x < recorded_position_plane.x)
+
+    if(this->position_missile.x < recorded_position_plane.x && (pass_x==INT_MIN || !pass_x))
     {
+      pass_x = 0;
       this->position_missile.x+=0.5;
     }
-    else if(this->position_missile.x > recorded_position_plane.x)
+    else if(this->position_missile.x > recorded_position_plane.x && (pass_x==INT_MIN || pass_x))
     {
+      pass_x = 1;
       this->position_missile.x-=0.5;
     }
 
@@ -123,13 +128,15 @@ void Enemy::tick(glm::vec3 position_plane) {
     this->position_missile.y+=0.5;
 
 
-    if(this->position_missile.z < recorded_position_plane.z)
+    if(this->position_missile.z < recorded_position_plane.z && (pass_z == INT_MIN || !pass_z))
     {
       this->position_missile.z+=0.5;
+      pass_z = 0;
     }
-    else if(this->position_missile.z > recorded_position_plane.z)
+    else if(this->position_missile.z > recorded_position_plane.z && (pass_z==INT_MIN || pass_z))
     {
       this->position_missile.z-=0.5;
+      pass_z = 1;
     }
 
   }

@@ -18,11 +18,12 @@ GLFWwindow *window;
 /* Object Declaration */
 Airplane airplane;
 Floors floors;
-Checkpoint checkpoint;
-Enemy enemy[500];
+Checkpoint checkpoint[10];
+Enemy enemy[MAX_ENEMY_COUNT];
 
 
 int enemy_count = 0;
+int passed_count = 0;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 int set = 1;
@@ -76,7 +77,15 @@ void draw(int x) {
     // Scene render
     floors.draw(VP);
     airplane.draw(VP);
-    checkpoint.draw(VP);
+
+    for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
+    {
+      checkpoint[i].draw(VP, passed_count);
+
+      if(i==MAX_CHECKPOINT_COUNT - 1)
+        checkpoint[i].draw_arrow(VP);
+    }
+
     for(int i = 0;i < enemy_count; ++i)
     {
       enemy[i].draw(VP);
@@ -148,7 +157,18 @@ int tick_input(GLFWwindow *window) {
 void tick_elements(int move) {
     airplane.tick(move);
     floors.tick(airplane.speed);
-    checkpoint.tick();
+
+    int checkpoint_ret = INT_MIN;
+    for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
+    {
+      passed_count = checkpoint[i].tick(airplane.position,passed_count );
+
+      if(passed_count < MAX_CHECKPOINT_COUNT && i == MAX_CHECKPOINT_COUNT - 1){
+
+      cout<<"[plane pos: ] "<<airplane.position.y<<" "<<airplane.position.z<<" "<<passed_count<<endl;
+        checkpoint[i].tick_arrow(airplane.position, checkpoint[passed_count].position_checkpoint );
+      }
+    }
 
     for(int i = 0;i < enemy_count; ++i)
     {
@@ -159,12 +179,12 @@ void tick_elements(int move) {
 
     int random = rand();
 
-    if(random % 2 == 0 && enemy_count < 500)
+    if(random % 2 == 0 && enemy_count < MAX_ENEMY_COUNT)
     {
-      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , 0, rand()%1000 - 500, COLOR_RED);
+      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , 1, rand()%1000 - 500, COLOR_RED);
     }
     // cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
-    cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
+    // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
 
 }
 
@@ -176,7 +196,16 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     airplane = Airplane(0, 5, 0, COLOR_RED);
     floors = Floors(0, 0, COLOR_BLUE);
-    checkpoint = Checkpoint(0, 10, -10,COLOR_BLACK);
+
+    int random = rand();
+    checkpoint[0] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, -15, COLOR_BLACK);
+    // checkpoint[0] = Checkpoint(0 , 9, -15, COLOR_BLACK);
+    for(int i = 1;i < MAX_CHECKPOINT_COUNT; ++i)
+    {
+      checkpoint[i] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
+      // checkpoint[i] = Checkpoint(checkpoint[i-1].position_checkpoint.x , checkpoint[i-1].position_checkpoint.y, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
+
+    }
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
     // Get a handle for our "MVP" uniform
