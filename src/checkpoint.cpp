@@ -76,7 +76,6 @@ void Checkpoint::draw(glm::mat4 VP, int passed_count) {
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object_checkpoint);
-
 }
 
 void Checkpoint::draw_arrow(glm::mat4 VP) {
@@ -91,6 +90,7 @@ void Checkpoint::draw_arrow(glm::mat4 VP) {
     glm::mat4 MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     draw3DObject(this->object_arrow);
+
 }
 
 
@@ -182,7 +182,7 @@ void Checkpoint::tick_arrow(glm::vec3 position_plane, glm::vec3 position_next_ch
   // if(position_plane.z < position_next_checkpoint.z)
   //   rotation_arrow_x*=-1.0f;
 
-  std::cout<<"tick fn: "<<rotation_arrow_x*180.0f/M_PI<<" "<< position_next_checkpoint.y<<" "<< position_next_checkpoint.z<<"\n";
+  // std::cout<<"tick fn: "<<rotation_arrow_x*180.0f/M_PI<<" "<< position_next_checkpoint.y<<" "<< position_next_checkpoint.z<<"\n";
 
 }
 
@@ -199,7 +199,7 @@ int Checkpoint::tick(glm::vec3 position_plane, int passed_count) {
     )
     {
       ++passed_count;
-      std::cout<<"Passed this one: "<<passed_count<<" "<<position_plane.z<<" "<<this->position_checkpoint.z <<"\n";
+      // std::cout<<"Passed this one: "<<passed_count<<" "<<position_plane.z<<" "<<this->position_checkpoint.z <<"\n";
       this->is_passed = 1;
     }
 

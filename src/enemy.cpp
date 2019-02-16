@@ -9,14 +9,44 @@ Enemy::Enemy(float x, float y, float z,color_t color) {
     this->pass_x = INT_MIN;
 
     this->pass_z = INT_MIN;
-    static const GLfloat vertex_buffer_data[] = {
-        -0.5f, 0.0f, 0.5f, // triangle 1 : begin
-        -0.5f, 0.0f, -0.5f,
-        0.5f, 0.0f, -0.5f, // triangle 1 : end
 
-        0.5f, 0.0f, 0.5f, // triangle 2 : begin
-         0.5f, 0.0f, -0.5f,
-        -0.5f, 0.0f, 0.5f, // triangle 2 : end
+    static const GLfloat vertex_buffer_data[] = {
+        -3.0f,-1.0f,-3.0f, // triangle 1 : begin
+        -3.0f,-1.0f, 3.0f,
+        -3.0f, 1.0f, 3.0f, // triangle 1 : end
+        3.0f, 1.0f,-3.0f, // triangle 2 : begin
+        -3.0f,-1.0f,-3.0f,
+        -3.0f, 1.0f,-3.0f, // triangle 2 : end
+        3.0f,-1.0f, 3.0f,
+        -3.0f,-1.0f,-3.0f,
+        3.0f,-1.0f,-3.0f,
+        3.0f, 1.0f,-3.0f,
+        3.0f,-1.0f,-3.0f,
+        -3.0f,-1.0f,-3.0f,
+        -3.0f,-1.0f,-3.0f,
+        -3.0f, 1.0f, 3.0f,
+        -3.0f, 1.0f,-3.0f,
+        3.0f,-1.0f, 3.0f,
+        -3.0f,-1.0f, 3.0f,
+        -3.0f,-1.0f,-3.0f,
+        -3.0f, 1.0f, 3.0f,
+        -3.0f,-1.0f, 3.0f,
+        3.0f,-1.0f, 3.0f,
+        3.0f, 1.0f, 3.0f,
+        3.0f,-1.0f,-3.0f,
+        3.0f, 1.0f,-3.0f,
+        3.0f,-1.0f,-3.0f,
+        3.0f, 1.0f, 3.0f,
+        3.0f,-1.0f, 3.0f,
+        3.0f, 1.0f, 3.0f,
+        3.0f, 1.0f,-3.0f,
+        -3.0f, 1.0f,-3.0f,
+        3.0f, 1.0f, 3.0f,
+        -3.0f, 1.0f,-3.0f,
+        -3.0f, 1.0f, 3.0f,
+        3.0f, 1.0f, 3.0f,
+        -3.0f, 1.0f, 3.0f,
+        3.0f,-1.0f, 3.0f
     };
 
     static const GLfloat missile_vertex_buffer_data[] = {
@@ -58,7 +88,7 @@ Enemy::Enemy(float x, float y, float z,color_t color) {
       0.5f,-0.5f, 4.0f
     };
 
-    this->object_enemy = create3DObject(GL_TRIANGLES, 2*3, vertex_buffer_data, color, GL_FILL);
+    this->object_enemy = create3DObject(GL_TRIANGLES, 36, vertex_buffer_data, color, GL_FILL);
     this->object_missile = create3DObject(GL_TRIANGLES, 36, missile_vertex_buffer_data, color, GL_FILL);
 }
 
@@ -98,7 +128,7 @@ void Enemy::draw(glm::mat4 VP) {
     }
 }
 
-void Enemy::tick(glm::vec3 position_plane) {
+void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
 
   if( !this->toggle_missile &&
       abs(this->position.x) - abs(position_plane.x) < 10.0 &&
@@ -140,9 +170,53 @@ void Enemy::tick(glm::vec3 position_plane) {
     }
 
   }
+
+  float temp = this->position.z;
+  float enemy_y;
+  if(temp <= -400)
+  {
+    enemy_y = position_floor[0].y;
+  }
+  else if(temp <= -300)
+  {
+    enemy_y = position_floor[1].y;
+  }
+  else if(temp <= -200)
+  {
+    enemy_y = position_floor[2].y;
+  }
+  else if(temp <= -100)
+  {
+    enemy_y = position_floor[3].y;
+  }
+  else if(temp <= 0)
+  {
+    enemy_y = position_floor[4].y;
+  }
+  else if(temp <= 100)
+  {
+    enemy_y = position_floor[5].y;
+  }
+  else if(temp <= 200)
+  {
+    enemy_y = position_floor[6].y;
+  }
+  else if(temp <= 300)
+  {
+    enemy_y = position_floor[7].y;
+  }
+  else if(temp <= 400)
+  {
+    enemy_y = position_floor[8].y;
+  }
+  else if(temp <= 500)
+  {
+    enemy_y = position_floor[9].y;
+  }
+
     // this->rotation += speed;
-    // this->position.z += speed;
-    // this->position.y -= speed;
+  // this->position.z += speed;
+  this->position.y = enemy_y;
 
 }
 

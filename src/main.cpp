@@ -165,23 +165,66 @@ void tick_elements(int move) {
 
       if(passed_count < MAX_CHECKPOINT_COUNT && i == MAX_CHECKPOINT_COUNT - 1){
 
-      cout<<"[plane pos: ] "<<airplane.position.y<<" "<<airplane.position.z<<" "<<passed_count<<endl;
+      // cout<<"[plane pos: ] "<<airplane.position.y<<" "<<airplane.position.z<<" "<<passed_count<<endl;
         checkpoint[i].tick_arrow(airplane.position, checkpoint[passed_count].position_checkpoint );
       }
     }
 
     for(int i = 0;i < enemy_count; ++i)
     {
-      enemy[i].tick(airplane.position);
+      enemy[i].tick(airplane.position, floors.position);
     }
 
     camera_rotation_angle += 0.7;
 
     int random = rand();
-
+    float enemy_y;
+    int temp;
     if(random % 2 == 0 && enemy_count < MAX_ENEMY_COUNT)
     {
-      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , 1, rand()%1000 - 500, COLOR_RED);
+      temp = rand()%1000 - 501;
+
+      if(temp <= -400)
+      {
+        enemy_y = floors.position[0].y;
+      }
+      else if(temp <= -300)
+      {
+        enemy_y = floors.position[1].y;
+      }
+      else if(temp <= -200)
+      {
+        enemy_y = floors.position[2].y;
+      }
+      else if(temp <= -100)
+      {
+        enemy_y = floors.position[3].y;
+      }
+      else if(temp <= 0)
+      {
+        enemy_y = floors.position[4].y;
+      }
+      else if(temp <= 100)
+      {
+        enemy_y = floors.position[5].y;
+      }
+      else if(temp <= 200)
+      {
+        enemy_y = floors.position[6].y;
+      }
+      else if(temp <= 300)
+      {
+        enemy_y = floors.position[7].y;
+      }
+      else if(temp <= 400)
+      {
+        enemy_y = floors.position[8].y;
+      }
+      else if(temp <= 500)
+      {
+        enemy_y = floors.position[9].y;
+      }
+      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , enemy_y, temp, COLOR_RED);
     }
     // cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
     // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
@@ -195,7 +238,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     // Create the models
 
     airplane = Airplane(0, 5, 0, COLOR_RED);
-    floors = Floors(0, 0, COLOR_BLUE);
+    floors = Floors(0, 2, COLOR_BLUE);
 
     int random = rand();
     checkpoint[0] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, -15, COLOR_BLACK);
