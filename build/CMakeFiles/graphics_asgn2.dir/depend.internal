@@ -5,12 +5,20 @@ CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.o
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.cpp
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 CMakeFiles/graphics_asgn2.dir/src/color.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/color.cpp
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+CMakeFiles/graphics_asgn2.dir/src/dashboard.cpp.o
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.cpp
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 CMakeFiles/graphics_asgn2.dir/src/enemy.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.cpp
@@ -23,11 +31,18 @@ CMakeFiles/graphics_asgn2.dir/src/floor.cpp.o
 CMakeFiles/graphics_asgn2.dir/src/input.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/input.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+CMakeFiles/graphics_asgn2.dir/src/land.cpp.o
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.cpp
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/floor.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/timer.h

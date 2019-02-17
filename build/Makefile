@@ -150,6 +150,33 @@ src/airplane.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.s
 .PHONY : src/airplane.cpp.s
 
+src/ammunition.o: src/ammunition.cpp.o
+
+.PHONY : src/ammunition.o
+
+# target to build an object file
+src/ammunition.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.o
+.PHONY : src/ammunition.cpp.o
+
+src/ammunition.i: src/ammunition.cpp.i
+
+.PHONY : src/ammunition.i
+
+# target to preprocess a source file
+src/ammunition.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.i
+.PHONY : src/ammunition.cpp.i
+
+src/ammunition.s: src/ammunition.cpp.s
+
+.PHONY : src/ammunition.s
+
+# target to generate assembly for a file
+src/ammunition.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.s
+.PHONY : src/ammunition.cpp.s
+
 src/checkpoint.o: src/checkpoint.cpp.o
 
 .PHONY : src/checkpoint.o
@@ -203,6 +230,33 @@ src/color.s: src/color.cpp.s
 src/color.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/color.cpp.s
 .PHONY : src/color.cpp.s
+
+src/dashboard.o: src/dashboard.cpp.o
+
+.PHONY : src/dashboard.o
+
+# target to build an object file
+src/dashboard.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/dashboard.cpp.o
+.PHONY : src/dashboard.cpp.o
+
+src/dashboard.i: src/dashboard.cpp.i
+
+.PHONY : src/dashboard.i
+
+# target to preprocess a source file
+src/dashboard.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/dashboard.cpp.i
+.PHONY : src/dashboard.cpp.i
+
+src/dashboard.s: src/dashboard.cpp.s
+
+.PHONY : src/dashboard.s
+
+# target to generate assembly for a file
+src/dashboard.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/dashboard.cpp.s
+.PHONY : src/dashboard.cpp.s
 
 src/enemy.o: src/enemy.cpp.o
 
@@ -284,6 +338,33 @@ src/input.s: src/input.cpp.s
 src/input.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/input.cpp.s
 .PHONY : src/input.cpp.s
+
+src/land.o: src/land.cpp.o
+
+.PHONY : src/land.o
+
+# target to build an object file
+src/land.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/land.cpp.o
+.PHONY : src/land.cpp.o
+
+src/land.i: src/land.cpp.i
+
+.PHONY : src/land.i
+
+# target to preprocess a source file
+src/land.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/land.cpp.i
+.PHONY : src/land.cpp.i
+
+src/land.s: src/land.cpp.s
+
+.PHONY : src/land.s
+
+# target to generate assembly for a file
+src/land.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/land.cpp.s
+.PHONY : src/land.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -405,12 +486,18 @@ help:
 	@echo "... src/airplane.o"
 	@echo "... src/airplane.i"
 	@echo "... src/airplane.s"
+	@echo "... src/ammunition.o"
+	@echo "... src/ammunition.i"
+	@echo "... src/ammunition.s"
 	@echo "... src/checkpoint.o"
 	@echo "... src/checkpoint.i"
 	@echo "... src/checkpoint.s"
 	@echo "... src/color.o"
 	@echo "... src/color.i"
 	@echo "... src/color.s"
+	@echo "... src/dashboard.o"
+	@echo "... src/dashboard.i"
+	@echo "... src/dashboard.s"
 	@echo "... src/enemy.o"
 	@echo "... src/enemy.i"
 	@echo "... src/enemy.s"
@@ -420,6 +507,9 @@ help:
 	@echo "... src/input.o"
 	@echo "... src/input.i"
 	@echo "... src/input.s"
+	@echo "... src/land.o"
+	@echo "... src/land.i"
+	@echo "... src/land.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

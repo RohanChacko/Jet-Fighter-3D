@@ -132,7 +132,7 @@ void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
 
   if( !this->toggle_missile &&
       abs(this->position.x) - abs(position_plane.x) < 10.0 &&
-      abs(this->position.y) - abs(position_plane.y) < 10.0 &&
+      abs(this->position.y) - abs(position_plane.y) < 20.0 &&
       abs(this->position.z) - abs(position_plane.z) < 10.0
     )
   {
@@ -216,7 +216,7 @@ void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
 
     // this->rotation += speed;
   // this->position.z += speed;
-  this->position.y = enemy_y;
+  this->position.y = enemy_y + 2;
 
 }
 

@@ -16,6 +16,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #define MAX_CHECKPOINT_COUNT 10
+#define MAX_FLOOR_COUNT 10
 #define MAX_ENEMY_COUNT 500
 struct color_t {
     int r;
@@ -94,5 +95,11 @@ extern const color_t COLOR_SPRING;
 extern const color_t COLOR_DARKBLUE;
 extern const color_t COLOR_SKYBLUE;
 extern const color_t COLOR_BURLYWOOD;
+extern const color_t COLOR_SEABLUE;
+extern const color_t COLOR_ORANGERED;
+extern const color_t COLOR_LIMEGREEN;
+extern const color_t COLOR_YELLOW;
+extern const color_t COLOR_WHITE;
+extern const color_t COLOR_FORESTGREEN;
 
 #endif

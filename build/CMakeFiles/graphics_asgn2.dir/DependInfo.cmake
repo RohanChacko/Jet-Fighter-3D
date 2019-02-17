@@ -5,11 +5,14 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o"
+  "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/color.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/color.cpp.o"
+  "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/dashboard.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/enemy.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/floor.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/floor.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/input.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/input.cpp.o"
+  "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/land.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/main.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/nonedit.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o"
   "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/other_handlers.cpp" "/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/build/CMakeFiles/graphics_asgn2.dir/src/other_handlers.cpp.o"

@@ -4,10 +4,14 @@
 #include "floor.h"
 #include "enemy.h"
 #include "checkpoint.h"
+#include "dashboard.h"
+#include "land.h"
+#include "ammunition.h"
 
 using namespace std;
 
 GLMatrices Matrices;
+GLMatrices Matrices_dashboard;
 GLuint     programID;
 GLFWwindow *window;
 
@@ -18,7 +22,10 @@ GLFWwindow *window;
 /* Object Declaration */
 Airplane airplane;
 Floors floors;
-Checkpoint checkpoint[10];
+Dashboard dashboard;
+Land land;
+Ammunition ammunition;
+Checkpoint checkpoint[MAX_CHECKPOINT_COUNT];
 Enemy enemy[MAX_ENEMY_COUNT];
 
 
@@ -62,6 +69,8 @@ void draw(int x) {
 
     // Compute Camera matrix (view)
     Matrices.view = glm::lookAt( eye, target, up ); // Rotating Camera for 3D
+    Matrices_dashboard.view = glm::lookAt( eye, target, up ); // Rotating Camera for 3D
+
     // Don't change unless you are sure!!
     // Matrices.view = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); // Fixed camera for 2D (ortho) in XY plane
 
@@ -69,6 +78,7 @@ void draw(int x) {
     // Don't change unless you are sure!!
     glm::mat4 VP = Matrices.projection * Matrices.view;
 
+    glm::mat4 VP_DASH = Matrices_dashboard.projection * Matrices_dashboard.view;
     // Send our transformation to the currently bound shader, in the "MVP" uniform
     // For each model you render, since the MVP will be different (at least the M part)
     // Don't change unless you are sure!!
@@ -77,7 +87,13 @@ void draw(int x) {
     // Scene render
     floors.draw(VP);
     airplane.draw(VP);
+    land.draw(VP);
+    if(ammunition.active_bomb)
+      ammunition.draw_bomb(VP);
+    if(ammunition.active_missile)
+      ammunition.draw_missile(VP);
 
+    dashboard.draw(VP_DASH);
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
     {
       checkpoint[i].draw(VP, passed_count);
@@ -105,6 +121,8 @@ int tick_input(GLFWwindow *window) {
     int yaw_right = glfwGetKey(window, GLFW_KEY_D);
     int roll_left = glfwGetKey(window, GLFW_KEY_Q);
     int roll_right = glfwGetKey(window, GLFW_KEY_E);
+    int bomb = glfwGetKey(window, GLFW_KEY_C);
+    int missile = glfwGetKey(window, GLFW_KEY_Z);
 
     if (left) {
       cam_position.x+=0.03;
@@ -121,9 +139,11 @@ int tick_input(GLFWwindow *window) {
 
     else if(speed_up){
       airplane.speed+=0.001;
+      return 4;
     }
     else if(speed_down && airplane.speed>0.005){
       airplane.speed-=0.001;
+      return -4;
     }
 
     else if(pitch){
@@ -151,12 +171,27 @@ int tick_input(GLFWwindow *window) {
       set = -3;
       return set;
     }
+
+    if(bomb)
+    {
+      set = 5;
+      return set;
+    }
+
+    if(missile)
+    {
+      set = 6;
+      return set;
+    }
     return INT_MIN;
 }
 
 void tick_elements(int move) {
     airplane.tick(move);
     floors.tick(airplane.speed);
+    dashboard.tick(move, airplane.ticker, airplane.fuel);
+    dashboard.set_position(airplane.position);
+    ammunition.tick(move, airplane.position);
 
     int checkpoint_ret = INT_MIN;
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
@@ -224,7 +259,7 @@ void tick_elements(int move) {
       {
         enemy_y = floors.position[9].y;
       }
-      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , enemy_y, temp, COLOR_RED);
+      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , enemy_y + 2, temp, COLOR_RED);
     }
     // cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
     // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
@@ -237,9 +272,11 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    airplane = Airplane(0, 5, 0, COLOR_RED);
-    floors = Floors(0, 2, COLOR_BLUE);
-
+    airplane = Airplane(0, 50, 0, COLOR_RED);
+    floors = Floors(0, 8, COLOR_SEABLUE);
+    dashboard = Dashboard(COLOR_BLACK);
+    land = Land(1000, 0, COLOR_FORESTGREEN);
+    ammunition = Ammunition(airplane.position, COLOR_GREY);
     int random = rand();
     checkpoint[0] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, -15, COLOR_BLACK);
     // checkpoint[0] = Checkpoint(0 , 9, -15, COLOR_BLACK);
@@ -253,21 +290,23 @@ void initGL(GLFWwindow *window, int width, int height) {
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
     // Get a handle for our "MVP" uniform
     Matrices.MatrixID = glGetUniformLocation(programID, "MVP");
+    Matrices_dashboard.MatrixID = glGetUniformLocation(programID, "MVP");
 
 
     reshapeWindow (window, width, height);
 
     // Background color of the scene
-    glClearColor (COLOR_BURLYWOOD.r / 256.0, COLOR_BURLYWOOD.g / 256.0, COLOR_BURLYWOOD.b / 256.0, 0.0f); // R, G, B, A
+    glClearColor (COLOR_SKYBLUE.r / 256.0, COLOR_SKYBLUE.g / 256.0, COLOR_SKYBLUE.b / 256.0, 0.0f); // R, G, B, A
     glClearDepth (1.0f);
 
     glEnable (GL_DEPTH_TEST);
     glDepthFunc (GL_LEQUAL);
 
-    cout << "VENDOR: " << glGetString(GL_VENDOR) << endl;
-    cout << "RENDERER: " << glGetString(GL_RENDERER) << endl;
-    cout << "VERSION: " << glGetString(GL_VERSION) << endl;
-    cout << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
+    // INTERNAL INFORMATION
+    // cout << "VENDOR: " << glGetString(GL_VENDOR) << endl;
+    // cout << "RENDERER: " << glGetString(GL_RENDERER) << endl;
+    // cout << "VERSION: " << glGetString(GL_VERSION) << endl;
+    // cout << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 }
 
 
@@ -319,4 +358,5 @@ void reset_screen() {
     float left   = screen_center_x - 4 / screen_zoom;
     float right  = screen_center_x + 4 / screen_zoom;
     Matrices.projection = glm::perspective(90.0f, 1.0f, 0.01f, 1000.0f);
+    Matrices_dashboard.projection = glm::ortho(left, right, bottom, top, 0.1f, 500.0f);
 }

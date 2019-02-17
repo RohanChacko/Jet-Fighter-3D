@@ -7,6 +7,7 @@ Airplane::Airplane(float xs, float ys, float zs, color_t color) {
     this->rotation_z = 0;
     this->rotation_y = 0;
 
+    this->fuel = 1000;
     this->orc[0][0] = 1;
     this->orc[0][1] = 0;
     this->orc[0][2] = 0;
@@ -301,7 +302,7 @@ void Airplane::tick(int move) {
     // this->rotation += speed;
 
     ticker++;
-
+    // std::cout<<ticker<<"\n";
     // this->position.y -= speed;
 
     if(move == 1){

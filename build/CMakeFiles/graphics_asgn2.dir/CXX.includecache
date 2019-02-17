@@ -16,6 +16,18 @@ main.h
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.cpp
+ammunition.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.cpp
 checkpoint.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.h
@@ -29,6 +41,16 @@ main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/color.cpp
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.cpp
+dashboard.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.h
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 
@@ -78,6 +100,18 @@ glm/gtc/matrix_transform.hpp
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.cpp
+land.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.cpp
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
@@ -91,6 +125,12 @@ enemy.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/enemy.h
 checkpoint.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/checkpoint.h
+dashboard.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/dashboard.h
+land.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/land.h
+ammunition.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 iostream

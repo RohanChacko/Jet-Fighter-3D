@@ -18,6 +18,7 @@ public:
     void tick(int move);
     double speed;
     int ticker;
+    float fuel;
     glm::mat4 orc;
 
 private:
