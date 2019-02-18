@@ -30,6 +30,7 @@ public:
 
 private:
     VAO *object_bomb;
+    VAO *temp;
     VAO *object_missile;
 };
 

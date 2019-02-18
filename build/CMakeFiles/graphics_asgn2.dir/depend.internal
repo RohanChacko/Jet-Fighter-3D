@@ -46,6 +46,7 @@ CMakeFiles/graphics_asgn2.dir/src/main.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/timer.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/volcano.h
 CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/nonedit.cpp
@@ -55,3 +56,7 @@ CMakeFiles/graphics_asgn2.dir/src/other_handlers.cpp.o
 CMakeFiles/graphics_asgn2.dir/src/timer.cpp.o
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/timer.cpp
  /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/timer.h
+CMakeFiles/graphics_asgn2.dir/src/volcano.cpp.o
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/volcano.cpp
+ /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/volcano.h

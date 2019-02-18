@@ -16,6 +16,7 @@ public:
 
 private:
     VAO *object;
+    VAO *temp;
 };
 
 #endif // LAND_H

@@ -102,31 +102,37 @@ Ammunition::Ammunition(glm::vec3 position_plane, color_t color) {
 void Ammunition::draw_missile(glm::mat4 VP) {
     glm::mat4 MVP;
 
-    for(int i = 0;i<MAX_MISSILE_STOCK - missile_stock; ++i)
+    for(int i = 0;i<MAX_MISSILE_STOCK - missile_stock && missile_stock< MAX_MISSILE_STOCK; ++i)
     {
-      Matrices.model = glm::mat4(1.0f);
-      glm::mat4 translate = glm::translate (this->position_missile[i]);
-      Matrices.model *= (translate); // * rotate);
-      MVP = VP * Matrices.model;
-      glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-      draw3DObject(this->object_missile);
+      if(active_missile[i])
+      {
+        Matrices.model = glm::mat4(1.0f);
+        glm::mat4 translate = glm::translate (this->position_missile[i]);
+        Matrices.model *= (translate); // * rotate);
+        MVP = VP * Matrices.model;
+        glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+        draw3DObject(this->object_missile);
+      }
     }
 }
 
 void Ammunition::draw_bomb(glm::mat4 VP) {
     glm::mat4 MVP;
 
-    for(int i = 0;i< MAX_BOMB_STOCK; ++i)
+    for(int i = 0;i< MAX_BOMB_STOCK - bomb_stock && bomb_stock< MAX_BOMB_STOCK; ++i)
     {
-      Matrices.model = glm::mat4(1.0f);
-      glm::mat4 translate = glm::translate (this->position_bomb[i]);    // glTranslatef
-      // glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(1, 0, 0));
-      // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
-      // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
-      Matrices.model *= (translate); // * rotate);
-      glm::mat4 MVP = VP * Matrices.model;
-      glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-      draw3DObject(this->object_bomb);
+      if(active_bomb[i])
+      {
+        Matrices.model = glm::mat4(1.0f);
+        glm::mat4 translate = glm::translate (this->position_bomb[i]);    // glTranslatef
+        // glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(1, 0, 0));
+        // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
+        // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
+        Matrices.model *= (translate); // * rotate);
+        glm::mat4 MVP = VP * Matrices.model;
+        glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+        draw3DObject(this->object_bomb);
+      }
     }
 }
 
@@ -135,13 +141,17 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
   if(move == 5)
   {
       bomb_stock--;
-      active_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = 1;
-      this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = airplane_position;
-      this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].z -= 0.085;
-      this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].y -= 0.005;
+
+      if(bomb_stock < MAX_BOMB_STOCK)
+      {
+        active_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = 1;
+        this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = airplane_position;
+        this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].z -= 0.085;
+        this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].y -= 0.005;
+      }
   }
 
-  for(int i = 0;i<MAX_BOMB_STOCK - bomb_stock; ++i)
+  for(int i = 0;i<MAX_BOMB_STOCK - bomb_stock && bomb_stock < MAX_BOMB_STOCK; ++i)
   {
     if(active_bomb[i])
     {
@@ -160,13 +170,16 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
   if(move == 6)
   {
       missile_stock--;
-      active_missile[MAX_MISSILE_STOCK - missile_stock - 1] = 1;
-      this->position_missile[MAX_MISSILE_STOCK - missile_stock - 1] = airplane_position;
-      // this->position_missile.y -= 0.085;
-      // this->position_missile.z -= 0.005;
+      if(missile_stock < MAX_MISSILE_STOCK)
+      {
+        active_missile[MAX_MISSILE_STOCK - missile_stock - 1] = 1;
+        this->position_missile[MAX_MISSILE_STOCK - missile_stock - 1] = airplane_position;
+        // this->position_missile.y -= 0.085;
+        // this->position_missile.z -= 0.005;
+      }
   }
 
-  for(int i = 0;i<MAX_MISSILE_STOCK; ++i)
+  for(int i = 0;i<MAX_MISSILE_STOCK - missile_stock && missile_stock < MAX_MISSILE_STOCK; ++i)
   {
     if(active_missile[i])
     {

@@ -45,6 +45,7 @@ CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/land.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/main.h
 CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/timer.h
+CMakeFiles/graphics_asgn2.dir/src/main.cpp.o: ../src/volcano.h
 
 CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o: ../src/main.h
 CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o: ../src/nonedit.cpp
@@ -54,4 +55,8 @@ CMakeFiles/graphics_asgn2.dir/src/other_handlers.cpp.o: ../src/other_handlers.cp
 
 CMakeFiles/graphics_asgn2.dir/src/timer.cpp.o: ../src/timer.cpp
 CMakeFiles/graphics_asgn2.dir/src/timer.cpp.o: ../src/timer.h
+
+CMakeFiles/graphics_asgn2.dir/src/volcano.cpp.o: ../src/main.h
+CMakeFiles/graphics_asgn2.dir/src/volcano.cpp.o: ../src/volcano.cpp
+CMakeFiles/graphics_asgn2.dir/src/volcano.cpp.o: ../src/volcano.h
 

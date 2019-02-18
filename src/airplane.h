@@ -20,6 +20,7 @@ public:
     int ticker;
     float fuel;
     glm::mat4 orc;
+    int score;
 
 private:
     VAO *object;

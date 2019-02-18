@@ -7,6 +7,7 @@
 #include "dashboard.h"
 #include "land.h"
 #include "ammunition.h"
+#include "volcano.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ Floors floors;
 Dashboard dashboard;
 Land land;
 Ammunition ammunition;
+Volcano volcano[MAX_VOLCANO_COUNT];
 Checkpoint checkpoint[MAX_CHECKPOINT_COUNT];
 Enemy enemy[MAX_ENEMY_COUNT];
 
@@ -47,7 +49,7 @@ void draw(int x) {
     // Don't change unless you know what you are doing
     glUseProgram (programID);
 
-    // Eye - Location of camera. Don't change unless you are sure!!
+    // Eye - Location of camera
 
     // LEFT ARROW KEY AND RIGHT ARROW KEY CHANGES THE VIEW FROM TOWER VIEW TO INSIDE CUBE VIEW
 
@@ -88,12 +90,13 @@ void draw(int x) {
     floors.draw(VP);
     airplane.draw(VP);
     land.draw(VP);
+
     if(ammunition.active_bomb)
       ammunition.draw_bomb(VP);
     if(ammunition.active_missile)
       ammunition.draw_missile(VP);
 
-    dashboard.draw(VP_DASH);
+    dashboard.draw(VP_DASH, airplane.score);
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
     {
       checkpoint[i].draw(VP, passed_count);
@@ -105,6 +108,11 @@ void draw(int x) {
     for(int i = 0;i < enemy_count; ++i)
     {
       enemy[i].draw(VP);
+    }
+
+    for(int i = 0;i < MAX_VOLCANO_COUNT; ++i)
+    {
+      volcano[i].draw(VP);
     }
 
 }
@@ -192,8 +200,9 @@ void tick_elements(int move) {
     dashboard.tick(move, airplane.ticker, airplane.fuel);
     dashboard.set_position(airplane.position);
     ammunition.tick(move, airplane.position);
+    // volcano.tick(airplane_position);
 
-    int checkpoint_ret = INT_MIN;
+
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
     {
       passed_count = checkpoint[i].tick(airplane.position,passed_count );
@@ -272,12 +281,18 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    airplane = Airplane(0, 50, 0, COLOR_RED);
+    airplane = Airplane(500, 50, 0, COLOR_RED);
     floors = Floors(0, 8, COLOR_SEABLUE);
     dashboard = Dashboard(COLOR_BLACK);
     land = Land(1000, 0, COLOR_FORESTGREEN);
     ammunition = Ammunition(airplane.position, COLOR_GREY);
     int random = rand();
+    for(int i = 0; i< MAX_VOLCANO_COUNT; ++i)
+    {
+      random = rand();
+      volcano[i] = Volcano(rand()%450 + 530 , rand()%1000 - 501);
+    }
+    random = rand();
     checkpoint[0] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, -15, COLOR_BLACK);
     // checkpoint[0] = Checkpoint(0 , 9, -15, COLOR_BLACK);
     for(int i = 1;i < MAX_CHECKPOINT_COUNT; ++i)

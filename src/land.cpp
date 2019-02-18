@@ -2,6 +2,7 @@
 #include "main.h"
 #include <iostream>
 
+
 Land::Land(float x, float z,color_t color) {
 
     this->position = glm::vec3(x, 7, z);
@@ -47,6 +48,22 @@ Land::Land(float x, float z,color_t color) {
     };
 
     this->object = create3DObject(GL_TRIANGLES, 36, vertex_buffer_data, color, GL_FILL);
+
+
+    // std::vector<glm::vec3> vertices;
+  	// std::vector<glm::vec2> uvs;
+  	// std::vector<glm::vec3> normals;
+  	// bool res = loadOBJ("/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/mount1.obj", vertices, uvs, normals);
+    // // std::cout<<vertices[0][2];
+    // GLfloat temp[105000];int k = 0;
+    // for(int i = 0;i<vertices.size();++i)
+    // {
+    //   temp[k++] = vertices[i][0];
+    //   temp[k++] = vertices[i][1];
+    //   temp[k++] = vertices[i][2];
+    // }
+    // this->temp = create3DObject(GL_TRIANGLES, vertices.size(), temp, color, GL_FILL);
+
 }
 
 void Land::draw(glm::mat4 VP) {

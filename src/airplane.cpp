@@ -20,7 +20,8 @@ Airplane::Airplane(float xs, float ys, float zs, color_t color) {
     this->orc[2][1] = 0;
     this->orc[2][2] = 1;
 
-    speed = 0.09;
+    speed = 0.5;
+    this->score = 0;
     int stackCount = 100;
     int sectorCount = 100;
     static GLfloat g_vertex_buffer_data[100000];
