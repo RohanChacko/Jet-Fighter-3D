@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/graphics_asgn2.dir/src/volcano.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/main.cpp.o"
+  "CMakeFiles/graphics_asgn2.dir/src/addons.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/other_handlers.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/enemy.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/airplane.cpp.o"
@@ -8,6 +9,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/graphics_asgn2.dir/src/ammunition.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/color.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/floor.cpp.o"
+  "CMakeFiles/graphics_asgn2.dir/src/parachute.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/nonedit.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/land.cpp.o"
   "CMakeFiles/graphics_asgn2.dir/src/checkpoint.cpp.o"

@@ -18,7 +18,10 @@
 #define MAX_CHECKPOINT_COUNT 10
 #define MAX_VOLCANO_COUNT 10
 #define MAX_FLOOR_COUNT 10
-#define MAX_ENEMY_COUNT 500
+#define MAX_ENEMY_COUNT 300
+#define MAX_ADDON_COUNT 50
+#define MAX_PARACHUTE_COUNT 5
+
 struct color_t {
     int r;
     int g;
@@ -80,6 +83,7 @@ bool detect_collision(bounding_box_t a, bounding_box_t b);
 
 extern float screen_zoom, screen_center_x, screen_center_y;
 void reset_screen();
+void drop_ammo(int set);
 
 // ---- Colors ----
 extern const color_t COLOR_RED;

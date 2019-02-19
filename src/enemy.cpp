@@ -7,9 +7,9 @@ Enemy::Enemy(float x, float y, float z,color_t color) {
     this->rotation = 0;
     this->toggle_missile = 0;
     this->pass_x = INT_MIN;
-
+    this->sphere_radius = 75;
     this->pass_z = INT_MIN;
-
+    this->speed = 1.0;
     static const GLfloat vertex_buffer_data[] = {
         -3.0f,-1.0f,-3.0f, // triangle 1 : begin
         -3.0f,-1.0f, 3.0f,
@@ -96,16 +96,23 @@ void Enemy::draw_missile(glm::mat4 VP)
 {
   Matrices.model = glm::mat4(1.0f);
   glm::mat4 translate = glm::translate (this->position_missile);    // glTranslatef
-  float rotation_mis;
-  if(abs(this->recorded_position_plane.z) - abs(this->position.z) == 0)
-    rotation_mis = 90*M_PI/180.0f;
+  float rotation_mis_x;
+  float rotation_mis_y;
+  if(this->recorded_position_plane.z  == 0)
+    rotation_mis_x = 90*M_PI/180.0f;
   else
-    rotation_mis = atanf((abs(this->recorded_position_plane.y) - abs(this->position.y))/(abs(this->recorded_position_plane.z) - abs(this->position.z) ));
+    rotation_mis_x = -1*atanf( this->recorded_position_plane.y/sqrt(pow(this->recorded_position_plane.z,2) + pow(this->recorded_position_plane.z,2)) );
 
-  glm::mat4 rotate    = glm::rotate((float)(rotation_mis ), glm::vec3(1, 0, 0));
+    if(this->recorded_position_plane.y  == 0)
+      rotation_mis_y = 90*M_PI/180.0f;
+    else
+      rotation_mis_y = atanf( this->recorded_position_plane.z/this->recorded_position_plane.x );
+
+  glm::mat4 rotate_x    = glm::rotate((float)(rotation_mis_x ), glm::vec3(1, 0, 0));
+  glm::mat4 rotate_y    = glm::rotate((float)(rotation_mis_y ), glm::vec3(0, 1, 0));
   // No need as coords centered at 0, 0, 0 of cube arouund which we waant to rotate
   // rotate          = rotate * glm::translate(glm::vec3(0, -0.6, 0));
-  Matrices.model *= (translate * rotate);
+  Matrices.model *= (translate * rotate_y * rotate_x);
   glm::mat4 MVP = VP * Matrices.model;
   glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
   draw3DObject(this->object_missile);
@@ -130,44 +137,47 @@ void Enemy::draw(glm::mat4 VP) {
 
 void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
 
-  if( !this->toggle_missile &&
-      abs(this->position.x) - abs(position_plane.x) < 10.0 &&
-      abs(this->position.y) - abs(position_plane.y) < 20.0 &&
-      abs(this->position.z) - abs(position_plane.z) < 10.0
-    )
+  float L2_dist = pow((this->position.x - position_plane.x), 2) + pow((this->position.y - position_plane.y), 2) + pow((this->position.z - position_plane.z), 2);
+  if( !this->toggle_missile && L2_dist < pow(sphere_radius,2) )
   {
     this->toggle_missile = 1;
     this->position_missile = this->position;
-    this->recorded_position_plane = position_plane;
+    this->recorded_position_plane = position_plane - this->position;
+    this->recorded_position_plane /= sqrt(pow(this->recorded_position_plane.x,2) + pow(this->recorded_position_plane.y,2) + pow(this->recorded_position_plane.z,2));
   }
   else
   {
 
-    if(this->position_missile.x < recorded_position_plane.x && (pass_x==INT_MIN || !pass_x))
-    {
-      pass_x = 0;
-      this->position_missile.x+=0.5;
-    }
-    else if(this->position_missile.x > recorded_position_plane.x && (pass_x==INT_MIN || pass_x))
-    {
-      pass_x = 1;
-      this->position_missile.x-=0.5;
-    }
+    // if(this->position_missile.x < recorded_position_plane.x && (pass_x==INT_MIN || !pass_x))
+    // {
+    //   pass_x = 0;
+    //   this->position_missile.x+=0.5;
+    // }
+    // else if(this->position_missile.x > recorded_position_plane.x && (pass_x==INT_MIN || pass_x))
+    // {
+    //   pass_x = 1;
+    //   this->position_missile.x-=0.5;
+    // }
+    //
+    //
+    // this->position_missile.y+=0.5;
+    //
+    //
+    // if(this->position_missile.z < recorded_position_plane.z && (pass_z == INT_MIN || !pass_z))
+    // {
+    //   this->position_missile.z+=0.5;
+    //   pass_z = 0;
+    // }
+    // else if(this->position_missile.z > recorded_position_plane.z && (pass_z==INT_MIN || pass_z))
+    // {
+    //   this->position_missile.z-=0.5;
+    //   pass_z = 1;
+    // }
 
+    this->position_missile.x += this->recorded_position_plane.x*this->speed;
+    this->position_missile.y += this->recorded_position_plane.y*this->speed;
+    this->position_missile.z += this->recorded_position_plane.z*this->speed;
 
-    this->position_missile.y+=0.5;
-
-
-    if(this->position_missile.z < recorded_position_plane.z && (pass_z == INT_MIN || !pass_z))
-    {
-      this->position_missile.z+=0.5;
-      pass_z = 0;
-    }
-    else if(this->position_missile.z > recorded_position_plane.z && (pass_z==INT_MIN || pass_z))
-    {
-      this->position_missile.z-=0.5;
-      pass_z = 1;
-    }
 
   }
 

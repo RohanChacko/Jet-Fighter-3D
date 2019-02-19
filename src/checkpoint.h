@@ -31,7 +31,8 @@ public:
     int num_circles;
     int num_triangles;
     int is_passed;
-
+    color_t color;
+    GLfloat vertex_buffer_data[1000];
 private:
     VAO *object_checkpoint;
     VAO *object_arrow;

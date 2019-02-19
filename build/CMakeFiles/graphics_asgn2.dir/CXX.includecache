@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/addons.cpp
+addons.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/addons.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/addons.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.cpp
 airplane.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/airplane.h
@@ -133,6 +145,10 @@ ammunition.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/ammunition.h
 volcano.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/volcano.h
+addons.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/addons.h
+parachute.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.h
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 iostream
@@ -197,6 +213,18 @@ glm/gtx/transform.hpp
 -
 glm/gtc/matrix_transform.hpp
 -
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.cpp
+parachute.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.h
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 

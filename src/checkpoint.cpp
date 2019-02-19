@@ -7,7 +7,7 @@ Checkpoint::Checkpoint(float x, float y, float z, color_t color) {
     this->position_initial = glm::vec3(x, y, z);
     // position_arrow = glm::vec3(-1, -1 , -1);
     this->rotation = 0;
-
+    this->color = color;
     rotation_arrow_x = 0;
     rotation_arrow_y = 0;
     rotation_arrow_z = 0;
@@ -24,7 +24,7 @@ Checkpoint::Checkpoint(float x, float y, float z, color_t color) {
     // num_triangles = 100;
     num_circles = 36;
 
-    static GLfloat vertex_buffer_data[1000];
+    // GLfloat vertex_buffer_data[1000];
 
     vertex_buffer_data[0] = -0.5; vertex_buffer_data[1] = -0.5; vertex_buffer_data[2] = 0.0;
     vertex_buffer_data[3] = -0.5; vertex_buffer_data[4] = 0.5; vertex_buffer_data[5] = 0.0;
@@ -44,7 +44,7 @@ Checkpoint::Checkpoint(float x, float y, float z, color_t color) {
       };
     }
 
-    this->object_checkpoint = create3DObject(GL_TRIANGLES, num_circles*6, vertex_buffer_data, color, GL_FILL);
+    // this->object_checkpoint = create3DObject(GL_TRIANGLES, num_circles*6, vertex_buffer_data, color, GL_FILL);
 
     static GLfloat arrow_vertex_buffer_data[50];
 
@@ -67,6 +67,7 @@ Checkpoint::Checkpoint(float x, float y, float z, color_t color) {
 
 void Checkpoint::draw(glm::mat4 VP, int passed_count) {
 
+    this->object_checkpoint = create3DObject(GL_TRIANGLES, num_circles*6, vertex_buffer_data, this->color, GL_FILL);
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position_checkpoint);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(1, 0, 0));
@@ -96,10 +97,11 @@ void Checkpoint::draw_arrow(glm::mat4 VP) {
 
 void Checkpoint::tick_arrow(glm::vec3 position_plane, glm::vec3 position_next_checkpoint)
 {
-  this->position_arrow = position_plane;
+  // this->position_arrow = position_plane;
 
-  this->position_arrow.y -= 2.0;
-  this->position_arrow.z += 3.0;
+  this->position_arrow.x = 0.0;
+  this->position_arrow.y = 3.0;
+  this->position_arrow.z = 0.0;
 
   float del_z_1 = abs(position_next_checkpoint.z);
   float del_z_2 = abs(position_plane.z);
@@ -199,6 +201,8 @@ int Checkpoint::tick(glm::vec3 position_plane, int passed_count) {
     )
     {
       ++passed_count;
+      // CREDITS - SHASHWAT
+      this->color = COLOR_LIMEGREEN;
       // std::cout<<"Passed this one: "<<passed_count<<" "<<position_plane.z<<" "<<this->position_checkpoint.z <<"\n";
       this->is_passed = 1;
     }

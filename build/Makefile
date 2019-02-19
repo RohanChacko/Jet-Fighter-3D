@@ -123,6 +123,33 @@ graphics_asgn2/fast:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/build
 .PHONY : graphics_asgn2/fast
 
+src/addons.o: src/addons.cpp.o
+
+.PHONY : src/addons.o
+
+# target to build an object file
+src/addons.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/addons.cpp.o
+.PHONY : src/addons.cpp.o
+
+src/addons.i: src/addons.cpp.i
+
+.PHONY : src/addons.i
+
+# target to preprocess a source file
+src/addons.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/addons.cpp.i
+.PHONY : src/addons.cpp.i
+
+src/addons.s: src/addons.cpp.s
+
+.PHONY : src/addons.s
+
+# target to generate assembly for a file
+src/addons.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/addons.cpp.s
+.PHONY : src/addons.cpp.s
+
 src/airplane.o: src/airplane.cpp.o
 
 .PHONY : src/airplane.o
@@ -447,6 +474,33 @@ src/other_handlers.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/other_handlers.cpp.s
 .PHONY : src/other_handlers.cpp.s
 
+src/parachute.o: src/parachute.cpp.o
+
+.PHONY : src/parachute.o
+
+# target to build an object file
+src/parachute.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/parachute.cpp.o
+.PHONY : src/parachute.cpp.o
+
+src/parachute.i: src/parachute.cpp.i
+
+.PHONY : src/parachute.i
+
+# target to preprocess a source file
+src/parachute.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/parachute.cpp.i
+.PHONY : src/parachute.cpp.i
+
+src/parachute.s: src/parachute.cpp.s
+
+.PHONY : src/parachute.s
+
+# target to generate assembly for a file
+src/parachute.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/parachute.cpp.s
+.PHONY : src/parachute.cpp.s
+
 src/timer.o: src/timer.cpp.o
 
 .PHONY : src/timer.o
@@ -510,6 +564,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... graphics_asgn2"
+	@echo "... src/addons.o"
+	@echo "... src/addons.i"
+	@echo "... src/addons.s"
 	@echo "... src/airplane.o"
 	@echo "... src/airplane.i"
 	@echo "... src/airplane.s"
@@ -546,6 +603,9 @@ help:
 	@echo "... src/other_handlers.o"
 	@echo "... src/other_handlers.i"
 	@echo "... src/other_handlers.s"
+	@echo "... src/parachute.o"
+	@echo "... src/parachute.i"
+	@echo "... src/parachute.s"
 	@echo "... src/timer.o"
 	@echo "... src/timer.i"
 	@echo "... src/timer.s"

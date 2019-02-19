@@ -8,6 +8,8 @@
 #include "land.h"
 #include "ammunition.h"
 #include "volcano.h"
+#include "addons.h"
+#include "parachute.h"
 
 using namespace std;
 
@@ -26,9 +28,11 @@ Floors floors;
 Dashboard dashboard;
 Land land;
 Ammunition ammunition;
+Addon addon[MAX_ADDON_COUNT];
 Volcano volcano[MAX_VOLCANO_COUNT];
 Checkpoint checkpoint[MAX_CHECKPOINT_COUNT];
 Enemy enemy[MAX_ENEMY_COUNT];
+Parachute parachute[MAX_PARACHUTE_COUNT];
 
 
 int enemy_count = 0;
@@ -37,7 +41,9 @@ float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 int set = 1;
 Timer t60(1.0 / 60);
+int cur_cam = 4; //Follow cam
 glm::vec3 cam_position;
+glm::vec3 target_position;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -51,27 +57,83 @@ void draw(int x) {
 
     // Eye - Location of camera
 
-    // LEFT ARROW KEY AND RIGHT ARROW KEY CHANGES THE VIEW FROM TOWER VIEW TO INSIDE CUBE VIEW
+    // Plane View
+    if(cur_cam == 1)
+    {
+      cam_position.x = airplane.position.x;
+      cam_position.y = airplane.position.y + 2.0;
+      cam_position.z = airplane.position.z;
 
-    // cam_position.z = airplane.position.z - 2;
-    cam_position.y = airplane.position.y + 3;
-    cam_position.x = airplane.position.x;
-    cam_position.z = airplane.position.z + 3;
-    // cam_position.z+=airplane.speed;
+      target_position.x = airplane.position.x - 50 * sin(airplane.rotation_y * M_PI / 180.0);
+      target_position.y = airplane.position.y + cos(airplane.rotation_x * M_PI / 180.0);;
+      target_position.z = airplane.position.z - 50 * cos(airplane.rotation_y * M_PI / 180.0);
+      // target_position.x = (airplane.position.x)*cos(airplane.rotation_y * M_PI / 180.0) + (airplane.position.z - 10) * sin(airplane.rotation_y * M_PI / 180.0);
+      // target_position.y = airplane.position.y;
+      // target_position.z = -1*(airplane.position.x)*sin(airplane.rotation_y * M_PI / 180.0) + (airplane.position.z - 10)*cos(airplane.rotation_y * M_PI / 180.0);
+    }
+    // Top View
+    else if(cur_cam == 2)
+    {
+      cam_position.x = airplane.position.x + 0.25;
+      cam_position.y = airplane.position.y + 10;
+      cam_position.z = airplane.position.z;
+
+      target_position.x = airplane.position.x;
+      target_position.y = airplane.position.y;
+      target_position.z = airplane.position.z;
+    }
+    // Tower View
+    else if(cur_cam == 3)
+    {
+      cam_position.x = 475;
+      cam_position.y = 50;
+      cam_position.z = -100;
+
+      target_position.x = airplane.position.x;
+      target_position.y = airplane.position.y;
+      target_position.z = airplane.position.z;
+    }
+    // Follow View
+    else if(cur_cam == 4)
+    {
+      target_position.x = airplane.position.x;
+      target_position.y = airplane.position.y;
+      target_position.z = airplane.position.z;
+
+      cam_position.x = airplane.position.x + 2 * sin(airplane.rotation_y * M_PI / 180.0);
+      cam_position.y = airplane.position.y + 3;// + cos(airplane.rotation_x * M_PI / 180.0);;
+      cam_position.z = airplane.position.z + 2 * cos(airplane.rotation_y * M_PI / 180.0);
+    }
+    //Helicopter View
+    // else if(cur_cam == 5)
+    // {
+    //
+    // }
+
+
+
     // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
     glm::vec3 eye (cam_position.x, cam_position.y, cam_position.z);
-    // cout<<cam_position.x<<" "<<cam_position.y<<" "<< cam_position.z<<endl;
+    // cout<<"cam: "<<cam_position.x<<" "<<cam_position.y<<" "<< cam_position.z<<endl;
+    // cout<<"airplane: "<<airplane.position.x<<" "<<airplane.position.y<<" "<< airplane.position.z<<endl;
+    // cout<<"target: "<<target_position.x<<" "<<target_position.y<<" "<< target_position.z<<"\n\n";
+    // std::cout<<"angles: "<<airplane.rotation_x<<" "<<airplane.rotation_y<<" "<<airplane.rotation_z<<"\n\n";
     // glm::vec3 eye (5*cos(camera_rotation_angle*M_PI/180.0f), 3, 5*sin(camera_rotation_angle*M_PI/180.0f));
+
+
     // Target - Where is the camera looking at.  Don't change unless you are sure!!
 
-    glm::vec3 target (airplane.position.x, airplane.position.y, airplane.position.z);
+    glm::vec3 target (target_position.x, target_position.y, target_position.z);
 
     // // Up - Up vector defines tilt of camera.  Don't change unless you are sure!!
     glm::vec3 up (0, 1, 0);
 
     // Compute Camera matrix (view)
     Matrices.view = glm::lookAt( eye, target, up ); // Rotating Camera for 3D
-    Matrices_dashboard.view = glm::lookAt( eye, target, up ); // Rotating Camera for 3D
+
+    glm::vec3 eye_dash (0, 0, 1);
+    glm::vec3 target_dash (0, 0, 0);
+    Matrices_dashboard.view = glm::lookAt( eye_dash, target_dash, up ); // Rotating Camera for 3D
 
     // Don't change unless you are sure!!
     // Matrices.view = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)); // Fixed camera for 2D (ortho) in XY plane
@@ -88,7 +150,9 @@ void draw(int x) {
 
     // Scene render
     floors.draw(VP);
-    airplane.draw(VP);
+
+    airplane.draw(VP, cam_position, target_position);
+
     land.draw(VP);
 
     if(ammunition.active_bomb)
@@ -102,7 +166,7 @@ void draw(int x) {
       checkpoint[i].draw(VP, passed_count);
 
       if(i==MAX_CHECKPOINT_COUNT - 1)
-        checkpoint[i].draw_arrow(VP);
+        checkpoint[i].draw_arrow(VP_DASH);
     }
 
     for(int i = 0;i < enemy_count; ++i)
@@ -113,6 +177,16 @@ void draw(int x) {
     for(int i = 0;i < MAX_VOLCANO_COUNT; ++i)
     {
       volcano[i].draw(VP);
+    }
+
+    for(int i = 0;i < MAX_ADDON_COUNT/2; ++i)
+    {
+      addon[i].draw(VP);
+    }
+
+    for(int i = 0;i < MAX_PARACHUTE_COUNT; ++i)
+    {
+      parachute[i].draw(VP);
     }
 
 }
@@ -131,18 +205,24 @@ int tick_input(GLFWwindow *window) {
     int roll_right = glfwGetKey(window, GLFW_KEY_E);
     int bomb = glfwGetKey(window, GLFW_KEY_C);
     int missile = glfwGetKey(window, GLFW_KEY_Z);
+    int cam_1 = glfwGetKey(window, GLFW_KEY_1);
+    int cam_2 = glfwGetKey(window, GLFW_KEY_2);
+    int cam_3 = glfwGetKey(window, GLFW_KEY_3);
+    int cam_4 = glfwGetKey(window, GLFW_KEY_4);
+    int cam_5 = glfwGetKey(window, GLFW_KEY_5);
 
+    set = INT_MIN;
     if (left) {
-      cam_position.x+=0.03;
+      // cam_position.x+=0.03;
     }
     else if(right){
-      cam_position.x-=0.03;
+      // cam_position.x-=0.03;
     }
     else if(up){
-      cam_position.z+=0.03;
+      // cam_position.z+=0.03;
     }
     else if(down){
-      cam_position.z-=0.03;
+      // cam_position.z-=0.03;
     }
 
     else if(speed_up){
@@ -191,16 +271,39 @@ int tick_input(GLFWwindow *window) {
       set = 6;
       return set;
     }
-    return INT_MIN;
+
+    if(cam_1)
+    {
+      cur_cam = 1;
+    }
+    else if(cam_2)
+    {
+      cur_cam = 2;
+    }
+    else if(cam_3)
+    {
+      cur_cam = 3;
+    }
+    else if(cam_4)
+    {
+      cur_cam = 4;
+    }
+    else if(cam_5)
+    {
+      cur_cam = 5;
+    }
+    return set;
 }
 
-void tick_elements(int move) {
-    airplane.tick(move);
+void tick_elements(int move, GLFWwindow *window) {
+    airplane.tick(move, cam_position, target_position);
     floors.tick(airplane.speed);
     dashboard.tick(move, airplane.ticker, airplane.fuel);
     dashboard.set_position(airplane.position);
     ammunition.tick(move, airplane.position);
-    // volcano.tick(airplane_position);
+
+    for(int i = 0;i<MAX_VOLCANO_COUNT; ++i)
+      volcano[i].tick(airplane.position, window);
 
 
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
@@ -214,65 +317,35 @@ void tick_elements(int move) {
       }
     }
 
-    for(int i = 0;i < enemy_count; ++i)
+    for(int i = 0;i < MAX_ENEMY_COUNT; ++i)
     {
       enemy[i].tick(airplane.position, floors.position);
     }
 
+    for(int i = 0; i< MAX_ADDON_COUNT/2 ; ++i )
+    {
+      int ret=addon[i].tick_fuel(airplane.position);
+
+      if(ret != INT_MIN)
+        {
+          dashboard.height_fuelbar += ret;
+
+          if(dashboard.height_fuelbar > 8)
+            dashboard.height_fuelbar = 8;
+        }
+    }
+
+    for(int i = 0;i < MAX_PARACHUTE_COUNT; ++i)
+    {
+      parachute[i].tick(airplane.position);
+    }
     camera_rotation_angle += 0.7;
 
-    int random = rand();
-    float enemy_y;
-    int temp;
-    if(random % 2 == 0 && enemy_count < MAX_ENEMY_COUNT)
-    {
-      temp = rand()%1000 - 501;
+}
 
-      if(temp <= -400)
-      {
-        enemy_y = floors.position[0].y;
-      }
-      else if(temp <= -300)
-      {
-        enemy_y = floors.position[1].y;
-      }
-      else if(temp <= -200)
-      {
-        enemy_y = floors.position[2].y;
-      }
-      else if(temp <= -100)
-      {
-        enemy_y = floors.position[3].y;
-      }
-      else if(temp <= 0)
-      {
-        enemy_y = floors.position[4].y;
-      }
-      else if(temp <= 100)
-      {
-        enemy_y = floors.position[5].y;
-      }
-      else if(temp <= 200)
-      {
-        enemy_y = floors.position[6].y;
-      }
-      else if(temp <= 300)
-      {
-        enemy_y = floors.position[7].y;
-      }
-      else if(temp <= 400)
-      {
-        enemy_y = floors.position[8].y;
-      }
-      else if(temp <= 500)
-      {
-        enemy_y = floors.position[9].y;
-      }
-      enemy[enemy_count++] = Enemy(rand()%1000 - 500 , enemy_y + 2, temp, COLOR_RED);
-    }
-    // cout<<enemy[enemy_count-1].position.x<<" "<<enemy[enemy_count-1].position.z<<endl;
-    // cout<<airplane.position.x<<" "<<airplane.position.y<<" "<<airplane.position.z<<endl;
-
+void drop_ammo(int s)
+{
+  tick_elements(s, window);
 }
 
 /* Initialize the OpenGL rendering properties */
@@ -282,6 +355,8 @@ void initGL(GLFWwindow *window, int width, int height) {
     // Create the models
 
     airplane = Airplane(500, 50, 0, COLOR_RED);
+
+    cam_position.x = 500; cam_position.y = 55; cam_position.z = 2;
     floors = Floors(0, 8, COLOR_SEABLUE);
     dashboard = Dashboard(COLOR_BLACK);
     land = Land(1000, 0, COLOR_FORESTGREEN);
@@ -298,9 +373,73 @@ void initGL(GLFWwindow *window, int width, int height) {
     for(int i = 1;i < MAX_CHECKPOINT_COUNT; ++i)
     {
       checkpoint[i] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
-      // checkpoint[i] = Checkpoint(checkpoint[i-1].position_checkpoint.x , checkpoint[i-1].position_checkpoint.y, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
-
     }
+
+    float enemy_y;
+    int temp;
+
+    for(int i = 0;i<MAX_ENEMY_COUNT; ++i)
+    {
+      random = rand();
+        if(random % 2 == 0 && enemy_count < MAX_ENEMY_COUNT)
+        {
+          temp = rand()%1000 - 501;
+
+          if(temp <= -400)
+          {
+            enemy_y = floors.position[0].y;
+          }
+          else if(temp <= -300)
+          {
+            enemy_y = floors.position[1].y;
+          }
+          else if(temp <= -200)
+          {
+            enemy_y = floors.position[2].y;
+          }
+          else if(temp <= -100)
+          {
+            enemy_y = floors.position[3].y;
+          }
+          else if(temp <= 0)
+          {
+            enemy_y = floors.position[4].y;
+          }
+          else if(temp <= 100)
+          {
+            enemy_y = floors.position[5].y;
+          }
+          else if(temp <= 200)
+          {
+            enemy_y = floors.position[6].y;
+          }
+          else if(temp <= 300)
+          {
+            enemy_y = floors.position[7].y;
+          }
+          else if(temp <= 400)
+          {
+            enemy_y = floors.position[8].y;
+          }
+          else if(temp <= 500)
+          {
+            enemy_y = floors.position[9].y;
+          }
+          enemy[enemy_count++] = Enemy(rand()%1000 - 500 , enemy_y + 2, temp, COLOR_RED);
+        }
+      }
+
+    for(int i = 0;i <MAX_ADDON_COUNT/2; ++i)
+    {
+      addon[i] = Addon(rand()%1000 - 500 , rand()%60 + 30, rand()%200 - 100, 1);
+    }
+
+    for(int i = 0;i <MAX_PARACHUTE_COUNT; ++i)
+    {
+      parachute[i] = Parachute(rand()%1000 - 500 , 150, rand()%200 - 100);
+    }
+
+
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders("Sample_GL.vert", "Sample_GL.frag");
     // Get a handle for our "MVP" uniform
@@ -331,9 +470,7 @@ int main(int argc, char **argv) {
     int height = 1000;
     //Camera view Initialize
 
-    cam_position.x = 0;
-    cam_position.y = 6;
-    cam_position.z = -4;
+
 
     window = initGLFW(width, height);
 
@@ -351,7 +488,7 @@ int main(int argc, char **argv) {
             glfwSwapBuffers(window);
 
             int x = tick_input(window);
-            tick_elements(x);
+            tick_elements(x, window);
             draw(x);
         }
 

@@ -12,7 +12,7 @@ public:
 
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
-    void tick(glm::vec3 position_plane);
+    void tick(glm::vec3 position_plane, GLFWwindow *window);
 
 private:
     VAO *object;

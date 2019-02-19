@@ -157,10 +157,14 @@ void Volcano::draw(glm::mat4 VP) {
     draw3DObject(this->lava);
 }
 
-void Volcano::tick(glm::vec3 position_plane) {
-    // this->rotation += speed;
-    // this->position.z += speed;
+void Volcano::tick(glm::vec3 position_plane, GLFWwindow *window) {
 
+    float L2_dist = pow((this->position.x - position_plane.x), 2) + pow((this->position.y - position_plane.y), 2) + pow((this->position.z - position_plane.z), 2);
+    if(L2_dist < 30*30)
+    {
+      std::cout<<"##################################### GAME OVER ######################################\n";
+      quit(window);
+    }
 }
 
 void Volcano::set_position(float x, float y) {

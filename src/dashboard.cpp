@@ -2,16 +2,16 @@
 #include "main.h"
 
 Dashboard::Dashboard(color_t color) {
-    this->position_altimeter = glm::vec3(-2, -3, -50);
+    this->position_altimeter = glm::vec3(-2, -3, 0);
     this->rotation_altimeter = 0;
 
-    this->position_speedometer = glm::vec3(0, -3, -50);
+    this->position_speedometer = glm::vec3(0, -3, 0);
     this->rotation_speedometer = 29;
 
-    this->position_fuelbar = glm::vec3(2, -3, -50);
-    this->height_fuelbar = 10.0f;
+    this->position_fuelbar = glm::vec3(2, -3, 0);
+    this->height_fuelbar = 8.0f;
 
-    this->position_scoreboard = glm::vec3(2, 3, -50);
+    this->position_scoreboard = glm::vec3(-2, 2, 0);
 
     speed = 1;
     int num_circles = 36;
@@ -144,71 +144,71 @@ Dashboard::Dashboard(color_t color) {
       disp[6][i+2] = 0.0f;
     }
 
-    static GLfloat scoreboard[1000];
-    int n = 0;
-
-    // S
-    int s_index[7] = {0,1,3,4,6};
-
-    for(int i = 0; i < 5; ++i)
-    {
-      for(int j = 0; j<disp[s_index[i]].size(); ++j)
-        scoreboard[n++] = disp[s_index[i]][j];
-    }
-
-    // C
-    int c_index[4] = {0,1,2,3};
-
-    for(int i = 0; i < 4; ++i)
-    {
-      for(int j = 0; j<disp[c_index[i]].size(); ++j)
-        {
-          scoreboard[n++] = disp[c_index[i]][j];
-          if((n-1)%3 == 0)
-            scoreboard[n-1]+=0.44;
-        }
-    }
-
-    // O
-    int o_index[6] = {0,1,2,3,4,5};
-
-    for(int i = 0; i < 6; ++i)
-    {
-      for(int j = 0; j<disp[o_index[i]].size(); ++j)
-        {
-          scoreboard[n++] = disp[o_index[i]][j];
-          if((n-1)%3 == 0)
-            scoreboard[n-1]+=0.88;
-        }
-    }
-
-    // R
-    int r_index[6] = {0,1,2,4,5,6};
-
-    for(int i = 0; i < 6; ++i)
-    {
-      for(int j = 0; j<disp[r_index[i]].size(); ++j)
-        {
-          scoreboard[n++] = disp[r_index[i]][j];
-          if((n-1)%3 == 0)
-            scoreboard[n-1]+=1.42;
-        }
-    }
-
-    // E
-    int e_index[5] = {0,1,2,3,6};
-
-    for(int i = 0; i < 5; ++i)
-    {
-      for(int j = 0; j<disp[e_index[i]].size(); ++j)
-        {
-          scoreboard[n++] = disp[e_index[i]][j];
-          if((n-1)%3 == 0)
-            scoreboard[n-1]+=1.96;
-        }
-    }
-
-    this->object_scoreboard = create3DObject(GL_TRIANGLES, 2*3* (5+4+6+6+5), scoreboard, COLOR_BLACK, GL_FILL);
+    // static GLfloat scoreboard[1000];
+    // int n = 0;
+    //
+    // // S
+    // int s_index[7] = {0,1,3,4,6};
+    //
+    // for(int i = 0; i < 5; ++i)
+    // {
+    //   for(int j = 0; j<disp[s_index[i]].size(); ++j)
+    //     scoreboard[n++] = disp[s_index[i]][j];
+    // }
+    //
+    // // C
+    // int c_index[4] = {0,1,2,3};
+    //
+    // for(int i = 0; i < 4; ++i)
+    // {
+    //   for(int j = 0; j<disp[c_index[i]].size(); ++j)
+    //     {
+    //       scoreboard[n++] = disp[c_index[i]][j];
+    //       if((n-1)%3 == 0)
+    //         scoreboard[n-1]+=0.44;
+    //     }
+    // }
+    //
+    // // O
+    // int o_index[6] = {0,1,2,3,4,5};
+    //
+    // for(int i = 0; i < 6; ++i)
+    // {
+    //   for(int j = 0; j<disp[o_index[i]].size(); ++j)
+    //     {
+    //       scoreboard[n++] = disp[o_index[i]][j];
+    //       if((n-1)%3 == 0)
+    //         scoreboard[n-1]+=0.88;
+    //     }
+    // }
+    //
+    // // R
+    // int r_index[6] = {0,1,2,4,5,6};
+    //
+    // for(int i = 0; i < 6; ++i)
+    // {
+    //   for(int j = 0; j<disp[r_index[i]].size(); ++j)
+    //     {
+    //       scoreboard[n++] = disp[r_index[i]][j];
+    //       if((n-1)%3 == 0)
+    //         scoreboard[n-1]+=1.42;
+    //     }
+    // }
+    //
+    // // E
+    // int e_index[5] = {0,1,2,3,6};
+    //
+    // for(int i = 0; i < 5; ++i)
+    // {
+    //   for(int j = 0; j<disp[e_index[i]].size(); ++j)
+    //     {
+    //       scoreboard[n++] = disp[e_index[i]][j];
+    //       if((n-1)%3 == 0)
+    //         scoreboard[n-1]+=1.96;
+    //     }
+    // }
+    //
+    // this->object_scoreboard = create3DObject(GL_TRIANGLES, 2*3* (5+4+6+6+5), scoreboard, COLOR_BLACK, GL_FILL);
 }
 
 void Dashboard::draw(glm::mat4 VP, int score) {
@@ -260,15 +260,15 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     };
 
     color_t color_fuel;
-    if(this->height_fuelbar > 7.5)
+    if(this->height_fuelbar > 6.0)
     {
       color_fuel = COLOR_LIMEGREEN;;
     }
-    else if(this->height_fuelbar > 5.0)
+    else if(this->height_fuelbar > 4.0)
     {
       color_fuel = COLOR_YELLOW;
     }
-    else if(this->height_fuelbar > 2.5)
+    else if(this->height_fuelbar > 2.0)
     {
       color_fuel = COLOR_ORANGE;
     }
@@ -294,7 +294,7 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     int n = 0;
     int size = 0;
     int iter = 0;
-    
+    score = 1000;
     if(score == 0)
     {
       int tmp[6] = {0,1,2,3,4,5};
@@ -484,30 +484,30 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     Matrices.model *= (translate);
     MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
-    draw3DObject(this->object_scoreboard);
+    // draw3DObject(this->object_scoreboard);
     draw3DObject(this->object_score);
 }
 
 void Dashboard::set_position(glm::vec3 position_plane) {
-    this->position_altimeter = position_plane;
-    this->position_altimeter.x -= 3;
-    this->position_altimeter.y -= 9;
-    this->position_altimeter.z -= 5;
 
-    this->position_speedometer = position_plane;
+    this->position_altimeter.x = -3.5;
+    this->position_altimeter.y = -3;
+    this->position_altimeter.z = 0;
+
+
     this->position_speedometer.x = position_altimeter.x + 0.75 ;
-    this->position_speedometer.y -= 9.5;
-    this->position_speedometer.z -= 5;
+    this->position_speedometer.y = -3.5;
+    this->position_speedometer.z = 0;
 
-    this->position_fuelbar = position_plane;
-    this->position_fuelbar.x = position_altimeter.x + 6.75;
-    this->position_fuelbar.y -= 9.75;
-    this->position_fuelbar.z -= 5;
 
-    this->position_scoreboard = position_plane;
-    this->position_scoreboard.x -= 3.75;
-    this->position_scoreboard.y +=  0.50;
-    this->position_scoreboard.z = position_plane.z - 5;
+    this->position_fuelbar.x = position_altimeter.x + 7.0;
+    this->position_fuelbar.y = -4.0;
+    this->position_fuelbar.z = 0;
+
+
+    this->position_scoreboard.x = -5.75;
+    this->position_scoreboard.y =  3.75;
+    this->position_scoreboard.z = 0;
 }
 
 void Dashboard::tick(int move, int ticker, float& fuel) {

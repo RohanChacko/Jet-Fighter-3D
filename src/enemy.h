@@ -20,7 +20,7 @@ public:
     glm::vec3 position_missile;
     glm::vec3 recorded_position_plane;
     int pass_x;
-
+    float sphere_radius;
     int pass_z;
 private:
     VAO *object_enemy;
