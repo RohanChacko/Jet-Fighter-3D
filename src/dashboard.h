@@ -17,6 +17,9 @@ public:
     glm::vec3 position_fuelbar;
     float height_fuelbar;
 
+    glm::vec3 position_compass;
+    float rotation_compass;
+
     int score;
     float angle;
     glm::vec3 position_scoreboard;
@@ -24,7 +27,7 @@ public:
 
     void draw(glm::mat4 VP, int score);
     void set_position(glm::vec3 position_plane);
-    void tick(int move, int ticker, float& fuel);
+    void tick(int move, int ticker, float& fuel, float airplane_rotation_y);
     double speed;
 
 private:
@@ -34,6 +37,8 @@ private:
     VAO *object_fuelbar;
     VAO *object_scoreboard;
     VAO *object_score;
+    VAO *object_compass;
+    VAO *object_compass_pointer;
 
 };
 

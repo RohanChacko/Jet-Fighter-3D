@@ -13,6 +13,9 @@ Dashboard::Dashboard(color_t color) {
 
     this->position_scoreboard = glm::vec3(-2, 2, 0);
 
+    this->position_compass = glm::vec3(1, -3, 0);
+    this->rotation_compass = 0;
+
     speed = 1;
     int num_circles = 36;
 
@@ -209,12 +212,54 @@ Dashboard::Dashboard(color_t color) {
     // }
     //
     // this->object_scoreboard = create3DObject(GL_TRIANGLES, 2*3* (5+4+6+6+5), scoreboard, COLOR_BLACK, GL_FILL);
+
+    //------------------------------------------------------------------------//
+
+    static GLfloat compass[1000];
+
+    for(int i = 0;i<50;i++)
+    {
+      compass[9*i] = 0.0f;
+      compass[9*i+1] = 0.0f;
+      compass[9*i+2] = 0.0f;
+      compass[9*i+3] = 0.50f*cosf(2*3.14159265*i/50);
+      compass[9*i+4] = 0.50f*sinf(2*3.14159265*i/50);
+      compass[9*i+5] = 0.0f;
+      compass[9*i+6] = 0.50f*cosf((2*3.14159265*(i+1))/50);
+      compass[9*i+7] = 0.50f*sinf((2*3.14159265*(i+1))/50);
+      compass[9*i+8] = 0.0f;
+    };
+
+    static GLfloat compass_pointer[] = {
+      -0.05, 0.00, 0.0,
+      0.05, 0.00, 0.0,
+      0.0, 0.30, 0.0,
+
+      -0.05, 0.00, 0.0,
+      0.05, 0.00, 0.0,
+      0.0, -0.30, 0.0,
+    };
+
+    static const GLfloat color_buffer_data[] =
+    {
+      COLOR_ORANGERED.r/256.0, COLOR_ORANGERED.g/256.0, COLOR_ORANGERED.b/256.0,
+      COLOR_ORANGERED.r/256.0, COLOR_ORANGERED.g/256.0, COLOR_ORANGERED.b/256.0,
+      COLOR_ORANGERED.r/256.0, COLOR_ORANGERED.g/256.0, COLOR_ORANGERED.b/256.0,
+
+      COLOR_SKYBLUE.r/256.0, COLOR_SKYBLUE.g/256.0, COLOR_SKYBLUE.b/256.0,
+      COLOR_SKYBLUE.r/256.0, COLOR_SKYBLUE.g/256.0, COLOR_SKYBLUE.b/256.0,
+      COLOR_SKYBLUE.r/256.0, COLOR_SKYBLUE.g/256.0, COLOR_SKYBLUE.b/256.0,
+    };
+
+    this->object_compass_pointer = create3DObject(GL_TRIANGLES, 9*2, compass_pointer, color_buffer_data, GL_FILL);
+    this->object_compass = create3DObject(GL_TRIANGLES, 3*50, compass, COLOR_BLACK, GL_FILL);
+
 }
 
 void Dashboard::draw(glm::mat4 VP, int score) {
     glm::mat4 MVP;
     Matrices.model = glm::mat4(1.0f);
-    glm::mat4 translate = glm::translate (this->position_altimeter);    // glTranslatef
+    glm::mat4 translate = glm::translate (this->position_altimeter);
     Matrices.model *= (translate);
     MVP = VP * Matrices.model;
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -294,7 +339,7 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     int n = 0;
     int size = 0;
     int iter = 0;
-    
+
     if(score == 0)
     {
       int tmp[6] = {0,1,2,3,4,5};
@@ -486,6 +531,23 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
     // draw3DObject(this->object_scoreboard);
     draw3DObject(this->object_score);
+
+    //------------------------------------------------------------------------//
+
+    Matrices.model = glm::mat4(1.0f);
+    translate = glm::translate (this->position_compass);
+    Matrices.model *= (translate);
+    MVP = VP * Matrices.model;
+    glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    draw3DObject(this->object_compass);
+
+    Matrices.model = glm::mat4(1.0f);
+    translate = glm::translate (glm::vec3(this->position_compass.x , this->position_compass.y , 0) );    // glTranslatef
+    rotate    = glm::rotate((float) (this->rotation_compass * M_PI / 180.0f), glm::vec3(0, 0, 1));
+    Matrices.model *= (translate * rotate);
+    MVP = VP * Matrices.model;
+    glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
+    draw3DObject(this->object_compass_pointer);
 }
 
 void Dashboard::set_position(glm::vec3 position_plane) {
@@ -508,9 +570,14 @@ void Dashboard::set_position(glm::vec3 position_plane) {
     this->position_scoreboard.x = -5.75;
     this->position_scoreboard.y =  3.75;
     this->position_scoreboard.z = 0;
+
+
+    this->position_compass.x = position_altimeter.x + 2.25;
+    this->position_compass.y =  -3.5;
+    this->position_compass.z = 0;
 }
 
-void Dashboard::tick(int move, int ticker, float& fuel) {
+void Dashboard::tick(int move, int ticker, float& fuel, float airplane_rotation_y) {
     // this->rotation += speed;
     // this->position.x -= speed;
     // this->position.y -= speed;
@@ -560,5 +627,7 @@ void Dashboard::tick(int move, int ticker, float& fuel) {
 
     fuel -= (10.0 - this->height_fuelbar)*0.1;
     // std::cout<<fuel<<"\n";
+
+    this->rotation_compass = -1*airplane_rotation_y;
 
 }

@@ -15,49 +15,49 @@ Parachute:: Parachute(float x, float y, float z) {
 
     static GLfloat parachute[] = {
 
-      -1.0f,-2.0f,-1.0f, // triangle 1 : begin
-      -1.0f,-2.0f, 1.0f,
-      -1.0f, 2.0f, 1.0f, // triangle 1 : end
-      1.0f, 2.0f,-1.0f, // triangle 2 : begin
-      -1.0f,-2.0f,-1.0f,
-      -1.0f, 2.0f,-1.0f, // triangle 2 : end
-      1.0f,-2.0f, 1.0f,
-      -1.0f,-2.0f,-1.0f,
-      1.0f,-2.0f,-1.0f,
-      1.0f, 2.0f,-1.0f,
-      1.0f,-2.0f,-1.0f,
-      -1.0f,-2.0f,-1.0f,
-      -1.0f,-2.0f,-1.0f,
-      -1.0f, 2.0f, 1.0f,
-      -1.0f, 2.0f,-1.0f,
-      1.0f,-2.0f, 1.0f,
-      -1.0f,-2.0f, 1.0f,
-      -1.0f,-2.0f,-1.0f,
-      -1.0f, 2.0f, 1.0f,
-      -1.0f,-2.0f, 1.0f,
-      1.0f,-2.0f, 1.0f,
-      1.0f, 2.0f, 1.0f,
-      1.0f,-2.0f,-1.0f,
-      1.0f, 2.0f,-1.0f,
-      1.0f,-2.0f,-1.0f,
-      1.0f, 2.0f, 1.0f,
-      1.0f,-2.0f, 1.0f,
-      1.0f, 2.0f, 1.0f,
-      1.0f, 2.0f,-1.0f,
-      -1.0f, 2.0f,-1.0f,
-      1.0f, 2.0f, 1.0f,
-      -1.0f, 2.0f,-1.0f,
-      -1.0f, 2.0f, 1.0f,
-      1.0f, 2.0f, 1.0f,
-      -1.0f, 2.0f, 1.0f,
-      1.0f,-2.0f, 1.0f,
+      -10.0f,-2.0f,-10.0f, // triangle 10 : begin
+      -10.0f,-2.0f, 10.0f,
+      -10.0f, 2.0f, 10.0f, // triangle 10 : end
+      10.0f, 2.0f,-10.0f, // triangle 2 : begin
+      -10.0f,-2.0f,-10.0f,
+      -10.0f, 2.0f,-10.0f, // triangle 2 : end
+      10.0f,-2.0f, 10.0f,
+      -10.0f,-2.0f,-10.0f,
+      10.0f,-2.0f,-10.0f,
+      10.0f, 2.0f,-10.0f,
+      10.0f,-2.0f,-10.0f,
+      -10.0f,-2.0f,-10.0f,
+      -10.0f,-2.0f,-10.0f,
+      -10.0f, 2.0f, 10.0f,
+      -10.0f, 2.0f,-10.0f,
+      10.0f,-2.0f, 10.0f,
+      -10.0f,-2.0f, 10.0f,
+      -10.0f,-2.0f,-10.0f,
+      -10.0f, 2.0f, 10.0f,
+      -10.0f,-2.0f, 10.0f,
+      10.0f,-2.0f, 10.0f,
+      10.0f, 2.0f, 10.0f,
+      10.0f,-2.0f,-10.0f,
+      10.0f, 2.0f,-10.0f,
+      10.0f,-2.0f,-10.0f,
+      10.0f, 2.0f, 10.0f,
+      10.0f,-2.0f, 10.0f,
+      10.0f, 2.0f, 10.0f,
+      10.0f, 2.0f,-10.0f,
+      -10.0f, 2.0f,-10.0f,
+      10.0f, 2.0f, 10.0f,
+      -10.0f, 2.0f,-10.0f,
+      -10.0f, 2.0f, 10.0f,
+      10.0f, 2.0f, 10.0f,
+      -10.0f, 2.0f, 10.0f,
+      10.0f,-2.0f, 10.0f,
     };
 
     this->object = create3DObject(GL_TRIANGLES, 36,parachute, COLOR_SPRING, GL_FILL);
 }
 
 void Parachute::draw(glm::mat4 VP) {
-  if(!this->is_hit || this->position.y > -15)
+  if(!this->is_hit)
   {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
@@ -74,9 +74,9 @@ void Parachute::draw(glm::mat4 VP) {
 int Parachute::collision(glm::vec3 position_missile)
 {
   if( !this->is_hit &&
-      fabs( fabs(this->position.x) - fabs(position_missile.x) ) < 5.0 &&
-      fabs( fabs(this->position.y) - fabs(position_missile.y) ) < 5.0 &&
-      fabs( fabs(this->position.z) - fabs(position_missile.z) ) < 5.0
+      fabs( fabs(this->position.x) - fabs(position_missile.x) ) < 10.0 &&
+      fabs( fabs(this->position.y) - fabs(position_missile.y) ) < 10.0 &&
+      fabs( fabs(this->position.z) - fabs(position_missile.z) ) < 10.0
     )
     {
 

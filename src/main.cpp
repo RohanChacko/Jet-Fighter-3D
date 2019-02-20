@@ -40,6 +40,7 @@ int cur_cam = 4; //Follow cam
 int pressed = -1;
 int enemy_count = 0;
 int passed_count = 0;
+int disable_input = 0;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 int set = 1;
@@ -240,6 +241,7 @@ int tick_input(GLFWwindow *window) {
     int cam_3 = glfwGetKey(window, GLFW_KEY_3);
     int cam_4 = glfwGetKey(window, GLFW_KEY_4);
     int cam_5 = glfwGetKey(window, GLFW_KEY_5);
+    int barrel_roll = glfwGetKey(window, GLFW_KEY_7);
 
     set = INT_MIN;
     if (left) {
@@ -322,13 +324,27 @@ int tick_input(GLFWwindow *window) {
     {
       cur_cam = 5;
     }
+
+    if(barrel_roll)
+    {
+      disable_input = 1;
+    }
     return set;
 }
 
 void tick_elements(int move, GLFWwindow *window) {
-    airplane.tick(move, cam_position, target_position);
+
+    if(disable_input == 1)
+    {
+      int ret = airplane.barrel_roll();
+
+      if(ret == 1)
+        disable_input = 0;
+    }
+    else
+      airplane.tick(move, cam_position, target_position);
     floors.tick(airplane.speed);
-    dashboard.tick(move, airplane.ticker, airplane.fuel);
+    dashboard.tick(move, airplane.ticker, airplane.fuel, airplane.rotation_y);
     dashboard.set_position(airplane.position);
     ammunition.tick(move, airplane.position, airplane.rotation_y);
 
@@ -427,7 +443,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     }
     random = rand();
     checkpoint[0] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, -15, COLOR_BLACK);
-    // checkpoint[0] = Checkpoint(0 , 9, -15, COLOR_BLACK);
+
     for(int i = 1;i < MAX_CHECKPOINT_COUNT; ++i)
     {
       checkpoint[i] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
@@ -435,7 +451,7 @@ void initGL(GLFWwindow *window, int width, int height) {
 
     for(int i = 0;i < MAX_SMOKERING_COUNT; ++i)
     {
-      smokering[i] = Smokering(checkpoint[i].position_checkpoint.x + rand()%50 + 10, rand()%60 + 20, checkpoint[i].position_checkpoint.z +rand()%25, COLOR_WHITE);
+      smokering[i] = Smokering(checkpoint[i].position_checkpoint.x + rand()%100 + 15, rand()%60 + 20, checkpoint[i].position_checkpoint.z +rand()%25, COLOR_WHITE);
     }
     float enemy_y;
     int temp;

@@ -16,6 +16,7 @@ public:
     void draw(glm::mat4 VP, glm::vec3& cam_position, glm::vec3& target_position);
     void set_position(float x, float y, float z);
     void tick(int move, glm::vec3& cam_position, glm::vec3& target_position);
+    int barrel_roll();
     double speed;
     int ticker;
     float fuel;

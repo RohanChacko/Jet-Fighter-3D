@@ -159,7 +159,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
         sphere_radius = 18;
 
     }
-    else
-      screen_zoom+=yoffset*1;
+    // else
+    //   screen_zoom+=yoffset*1;
     reset_screen();
 }
