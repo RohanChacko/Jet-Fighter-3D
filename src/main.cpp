@@ -10,6 +10,7 @@
 #include "volcano.h"
 #include "addons.h"
 #include "parachute.h"
+#include "smokering.h"
 
 using namespace std;
 
@@ -31,19 +32,25 @@ Ammunition ammunition;
 Addon addon[MAX_ADDON_COUNT];
 Volcano volcano[MAX_VOLCANO_COUNT];
 Checkpoint checkpoint[MAX_CHECKPOINT_COUNT];
+Smokering smokering[MAX_SMOKERING_COUNT];
 Enemy enemy[MAX_ENEMY_COUNT];
 Parachute parachute[MAX_PARACHUTE_COUNT];
 
-
+int cur_cam = 4; //Follow cam
+int pressed = -1;
 int enemy_count = 0;
 int passed_count = 0;
 float screen_zoom = 1, screen_center_x = 0, screen_center_y = 0;
 float camera_rotation_angle = 0;
 int set = 1;
 Timer t60(1.0 / 60);
-int cur_cam = 4; //Follow cam
+
+
 glm::vec3 cam_position;
 glm::vec3 target_position;
+
+int width;
+int height;
 
 /* Render the scene with openGL */
 /* Edit this function according to your assignment */
@@ -57,6 +64,12 @@ void draw(int x) {
 
     // Eye - Location of camera
 
+    if(cur_cam !=5)
+    {
+      pressed = -1;
+      rotation_x = 0;
+      rotation_y = 0;
+    }
     // Plane View
     if(cur_cam == 1)
     {
@@ -105,10 +118,22 @@ void draw(int x) {
       cam_position.z = airplane.position.z + 2 * cos(airplane.rotation_y * M_PI / 180.0);
     }
     //Helicopter View
-    // else if(cur_cam == 5)
-    // {
-    //
-    // }
+    else if(cur_cam == 5)
+    {
+      target_position.x = airplane.position.x;
+      target_position.y = airplane.position.y;
+      target_position.z = airplane.position.z;
+
+      //Initial value
+      if(pressed == -1)
+      {
+        cam_position.x = airplane.position.x + 7 * sin(airplane.rotation_y * M_PI / 180.0);
+        cam_position.y = airplane.position.y + 7;// + cos(airplane.rotation_x * M_PI / 180.0);;
+        cam_position.z = airplane.position.z + 7* cos(airplane.rotation_y * M_PI / 180.0);
+      }
+
+      helicopter_track(window, height, width, cam_position, airplane.position);
+    }
 
 
 
@@ -158,7 +183,7 @@ void draw(int x) {
     if(ammunition.active_bomb)
       ammunition.draw_bomb(VP);
     if(ammunition.active_missile)
-      ammunition.draw_missile(VP);
+      ammunition.draw_missile(VP, airplane.rotation_y);
 
     dashboard.draw(VP_DASH, airplane.score);
     for(int i = 0;i < MAX_CHECKPOINT_COUNT; ++i)
@@ -167,6 +192,11 @@ void draw(int x) {
 
       if(i==MAX_CHECKPOINT_COUNT - 1)
         checkpoint[i].draw_arrow(VP_DASH);
+    }
+
+    for(int i = 0;i < MAX_SMOKERING_COUNT; ++i)
+    {
+      smokering[i].draw(VP);
     }
 
     for(int i = 0;i < enemy_count; ++i)
@@ -300,7 +330,7 @@ void tick_elements(int move, GLFWwindow *window) {
     floors.tick(airplane.speed);
     dashboard.tick(move, airplane.ticker, airplane.fuel);
     dashboard.set_position(airplane.position);
-    ammunition.tick(move, airplane.position);
+    ammunition.tick(move, airplane.position, airplane.rotation_y);
 
     for(int i = 0;i<MAX_VOLCANO_COUNT; ++i)
       volcano[i].tick(airplane.position, window);
@@ -317,9 +347,26 @@ void tick_elements(int move, GLFWwindow *window) {
       }
     }
 
+    for(int i = 0;i < MAX_SMOKERING_COUNT; ++i)
+    {
+      airplane.score += smokering[i].tick(airplane.position);
+    }
+
     for(int i = 0;i < MAX_ENEMY_COUNT; ++i)
     {
-      enemy[i].tick(airplane.position, floors.position);
+      enemy[i].tick(airplane.position, floors.position, airplane.score);
+      // cout<<"SCORE: "<<airplane.score<<"\n";
+    }
+
+    for(int i = 0;i < MAX_ENEMY_COUNT; ++i)
+    {
+      for(int j = 0;j<MAX_BOMB_STOCK - ammunition.bomb_stock; ++j)
+      {
+        if(ammunition.active_bomb[j])
+        {
+            airplane.score+=enemy[i].collision(ammunition.position_bomb[j]);
+        }
+      }
     }
 
     for(int i = 0; i< MAX_ADDON_COUNT/2 ; ++i )
@@ -337,7 +384,18 @@ void tick_elements(int move, GLFWwindow *window) {
 
     for(int i = 0;i < MAX_PARACHUTE_COUNT; ++i)
     {
-      parachute[i].tick(airplane.position);
+      parachute[i].tick();
+    }
+
+    for(int i = 0;i < MAX_PARACHUTE_COUNT; ++i)
+    {
+      for(int j = 0;j<MAX_MISSILE_STOCK - ammunition.missile_stock; ++j)
+      {
+        if(ammunition.active_missile[j])
+        {
+            airplane.score+=parachute[i].collision(ammunition.position_missile[j]);
+        }
+      }
     }
     camera_rotation_angle += 0.7;
 
@@ -354,7 +412,7 @@ void initGL(GLFWwindow *window, int width, int height) {
     /* Objects should be created before any other gl function and shaders */
     // Create the models
 
-    airplane = Airplane(500, 50, 0, COLOR_RED);
+    airplane = Airplane(500, 100, 0, COLOR_RED);
 
     cam_position.x = 500; cam_position.y = 55; cam_position.z = 2;
     floors = Floors(0, 8, COLOR_SEABLUE);
@@ -375,6 +433,10 @@ void initGL(GLFWwindow *window, int width, int height) {
       checkpoint[i] = Checkpoint(rand()%50 - 10 , rand()%60 + 20, checkpoint[i-1].position_checkpoint.z - 35, COLOR_BLACK);
     }
 
+    for(int i = 0;i < MAX_SMOKERING_COUNT; ++i)
+    {
+      smokering[i] = Smokering(checkpoint[i].position_checkpoint.x + rand()%50 + 10, rand()%60 + 20, checkpoint[i].position_checkpoint.z +rand()%25, COLOR_WHITE);
+    }
     float enemy_y;
     int temp;
 
@@ -466,8 +528,9 @@ void initGL(GLFWwindow *window, int width, int height) {
 
 int main(int argc, char **argv) {
     srand(time(0));
-    int width  = 1000;
-    int height = 1000;
+    width  = 1000;
+    height = 1000;
+
     //Camera view Initialize
 
 

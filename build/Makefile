@@ -501,6 +501,33 @@ src/parachute.cpp.s:
 	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/parachute.cpp.s
 .PHONY : src/parachute.cpp.s
 
+src/smokering.o: src/smokering.cpp.o
+
+.PHONY : src/smokering.o
+
+# target to build an object file
+src/smokering.cpp.o:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/smokering.cpp.o
+.PHONY : src/smokering.cpp.o
+
+src/smokering.i: src/smokering.cpp.i
+
+.PHONY : src/smokering.i
+
+# target to preprocess a source file
+src/smokering.cpp.i:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/smokering.cpp.i
+.PHONY : src/smokering.cpp.i
+
+src/smokering.s: src/smokering.cpp.s
+
+.PHONY : src/smokering.s
+
+# target to generate assembly for a file
+src/smokering.cpp.s:
+	$(MAKE) -f CMakeFiles/graphics_asgn2.dir/build.make CMakeFiles/graphics_asgn2.dir/src/smokering.cpp.s
+.PHONY : src/smokering.cpp.s
+
 src/timer.o: src/timer.cpp.o
 
 .PHONY : src/timer.o
@@ -606,6 +633,9 @@ help:
 	@echo "... src/parachute.o"
 	@echo "... src/parachute.i"
 	@echo "... src/parachute.s"
+	@echo "... src/smokering.o"
+	@echo "... src/smokering.i"
+	@echo "... src/smokering.s"
 	@echo "... src/timer.o"
 	@echo "... src/timer.i"
 	@echo "... src/timer.s"

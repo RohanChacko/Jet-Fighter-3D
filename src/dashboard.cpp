@@ -294,7 +294,7 @@ void Dashboard::draw(glm::mat4 VP, int score) {
     int n = 0;
     int size = 0;
     int iter = 0;
-    score = 1000;
+    
     if(score == 0)
     {
       int tmp[6] = {0,1,2,3,4,5};

@@ -16,6 +16,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #define MAX_CHECKPOINT_COUNT 10
+#define MAX_SMOKERING_COUNT 15
 #define MAX_VOLCANO_COUNT 10
 #define MAX_FLOOR_COUNT 10
 #define MAX_ENEMY_COUNT 300
@@ -79,9 +80,14 @@ struct bounding_box_t {
     float height;
 };
 
+extern int cur_cam;
+extern int pressed;
+extern float rotation_x;
+extern float rotation_y;
 bool detect_collision(bounding_box_t a, bounding_box_t b);
 
 extern float screen_zoom, screen_center_x, screen_center_y;
+void helicopter_track(GLFWwindow *window, int height, int width, glm::vec3 &cam_position, glm::vec3 airplane_position);
 void reset_screen();
 void drop_ammo(int set);
 

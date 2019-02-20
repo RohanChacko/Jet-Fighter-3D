@@ -13,9 +13,11 @@ public:
     void draw(glm::mat4 VP);
     void draw_missile(glm::mat4 VP);
     void set_position(float x, float y, float z);
-    void tick(glm::vec3 position_plane, glm::vec3 position_floor[10]);
+    void tick(glm::vec3 position_plane, glm::vec3 position_floor[10], int &airplane_score);
+    int collision(glm::vec3 position_bomb);
     double speed;
     int ticker;
+    int is_hit;
     int toggle_missile;
     glm::vec3 position_missile;
     glm::vec3 recorded_position_plane;

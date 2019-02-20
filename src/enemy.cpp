@@ -10,6 +10,7 @@ Enemy::Enemy(float x, float y, float z,color_t color) {
     this->sphere_radius = 75;
     this->pass_z = INT_MIN;
     this->speed = 1.0;
+    this->is_hit = 0;
     static const GLfloat vertex_buffer_data[] = {
         -3.0f,-1.0f,-3.0f, // triangle 1 : begin
         -3.0f,-1.0f, 3.0f,
@@ -119,6 +120,9 @@ void Enemy::draw_missile(glm::mat4 VP)
 }
 
 void Enemy::draw(glm::mat4 VP) {
+
+  if(!this->is_hit)
+  {
     Matrices.model = glm::mat4(1.0f);
     glm::mat4 translate = glm::translate (this->position);    // glTranslatef
     glm::mat4 rotate    = glm::rotate((float) (this->rotation * M_PI / 180.0f), glm::vec3(1, 0, 0));
@@ -133,9 +137,26 @@ void Enemy::draw(glm::mat4 VP) {
     {
       draw_missile(VP);
     }
+  }
 }
 
-void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
+int Enemy::collision(glm::vec3 position_bomb)
+{
+  if( !this->is_hit &&
+      fabs( fabs(this->position.x) - fabs(position_bomb.x) ) < 6.0 &&
+      fabs( fabs(this->position.y) - fabs(position_bomb.y) ) < 6.0 &&
+      fabs( fabs(this->position.z) - fabs(position_bomb.z) ) < 6.0
+    )
+    {
+      this->is_hit = 1;
+      // std::cout<<"DEDDDDDDD\n";
+      return 10;
+    }
+
+    return 0;
+}
+
+void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10], int &airplane_score) {
 
   float L2_dist = pow((this->position.x - position_plane.x), 2) + pow((this->position.y - position_plane.y), 2) + pow((this->position.z - position_plane.z), 2);
   if( !this->toggle_missile && L2_dist < pow(sphere_radius,2) )
@@ -180,6 +201,20 @@ void Enemy::tick(glm::vec3 position_plane, glm::vec3 position_floor[10]) {
 
 
   }
+
+  // MISSILE COLLISION
+
+  if(
+      fabs( fabs(this->position_missile.x) - fabs(position_plane.x) ) < 3.0 &&
+      fabs( fabs(this->position_missile.y) - fabs(position_plane.y) ) < 3.0 &&
+      fabs( fabs(this->position_missile.z) - fabs(position_plane.z) ) < 3.0
+    )
+    {
+      // this->is_hit = 1;
+      // std::cout<<" HITTTTTTTTTTTT\n";
+      airplane_score -=2;
+    }
+
 
   float temp = this->position.z;
   float enemy_y;

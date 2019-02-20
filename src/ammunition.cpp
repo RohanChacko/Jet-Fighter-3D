@@ -99,7 +99,7 @@ Ammunition::Ammunition(glm::vec3 position_plane, color_t color) {
     this->object_missile = create3DObject(GL_TRIANGLES, 36, missile_vertex_buffer_data, color, GL_FILL);
 }
 
-void Ammunition::draw_missile(glm::mat4 VP) {
+void Ammunition::draw_missile(glm::mat4 VP, float rotation_y) {
     glm::mat4 MVP;
 
     for(int i = 0;i<MAX_MISSILE_STOCK - missile_stock && missile_stock< MAX_MISSILE_STOCK; ++i)
@@ -108,7 +108,8 @@ void Ammunition::draw_missile(glm::mat4 VP) {
       {
         Matrices.model = glm::mat4(1.0f);
         glm::mat4 translate = glm::translate (this->position_missile[i]);
-        Matrices.model *= (translate); // * rotate);
+        glm::mat4 rotate    = glm::rotate((float) (rotation_y * M_PI / 180.0f), glm::vec3(0, 1, 0));
+        Matrices.model *= (translate * rotate);
         MVP = VP * Matrices.model;
         glUniformMatrix4fv(Matrices.MatrixID, 1, GL_FALSE, &MVP[0][0]);
         draw3DObject(this->object_missile);
@@ -136,7 +137,7 @@ void Ammunition::draw_bomb(glm::mat4 VP) {
     }
 }
 
-void Ammunition::tick(int move, glm::vec3 airplane_position) {
+void Ammunition::tick(int move, glm::vec3 airplane_position, float rotation_y) {
 
   if(move == 5)
   {
@@ -146,7 +147,7 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
       {
         active_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = 1;
         this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1] = airplane_position;
-        this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].z -= 0.085;
+        // this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].z -= 0.085;
         this->position_bomb[MAX_BOMB_STOCK - bomb_stock - 1].y -= 0.005;
       }
   }
@@ -156,7 +157,7 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
     if(active_bomb[i])
     {
       timer_bomb[i]++;
-      this->position_bomb[i].z -= 0.085;
+      // this->position_bomb[i].z = 0.085;
       this->position_bomb[i].y -= 0.005*timer_bomb[i];
     }
 
@@ -174,7 +175,7 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
       {
         active_missile[MAX_MISSILE_STOCK - missile_stock - 1] = 1;
         this->position_missile[MAX_MISSILE_STOCK - missile_stock - 1] = airplane_position;
-        // this->position_missile.y -= 0.085;
+        this->position_missile[MAX_MISSILE_STOCK - missile_stock - 1].y -= 0.085;
         // this->position_missile.z -= 0.005;
       }
   }
@@ -184,8 +185,9 @@ void Ammunition::tick(int move, glm::vec3 airplane_position) {
     if(active_missile[i])
     {
       timer_missile[i]++;
-      this->position_missile[i].y -= 0.085;
-      this->position_missile[i].z -= 0.005*timer_missile[i];
+      // this->position_missile[i].y -= 0.085;
+      this->position_missile[i].x -= 1.5*sinf(rotation_y * M_PI/180.0);
+      this->position_missile[i].z -= 1.5*cosf(rotation_y * M_PI/180.0);
     }
 
     if(this->position_missile[i].z <= -500)

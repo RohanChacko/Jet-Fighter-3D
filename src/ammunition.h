@@ -24,9 +24,9 @@ public:
     int missile_stock;
 
     void draw_bomb(glm::mat4 VP);
-    void draw_missile(glm::mat4 VP);
+    void draw_missile(glm::mat4 VP, float rotation_y);
     void set_position(float x, float y);
-    void tick(int move, glm::vec3 position);
+    void tick(int move, glm::vec3 position, float rotation_y);
 
 private:
     VAO *object_bomb;

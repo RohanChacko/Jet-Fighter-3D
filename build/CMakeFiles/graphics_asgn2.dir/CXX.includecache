@@ -149,6 +149,8 @@ addons.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/addons.h
 parachute.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.h
+smokering.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/smokering.h
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 iostream
@@ -225,6 +227,18 @@ iostream
 -
 
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/parachute.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/smokering.cpp
+smokering.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/smokering.h
+main.h
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
+iostream
+-
+
+/home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/smokering.h
 main.h
 /home/rohan/Graphics/Assignments/Assgn_2/jet-fighter-3d/src/main.h
 

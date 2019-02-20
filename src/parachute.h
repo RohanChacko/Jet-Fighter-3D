@@ -10,7 +10,7 @@ public:
     Parachute(float x, float y, float z);
     glm::vec3 position;
     float rotation;
-    
+
     color_t color;
     int val;
 
@@ -19,7 +19,8 @@ public:
     struct bounding_box_t box;
     void draw(glm::mat4 VP);
     void set_position(float x, float y);
-    int tick(glm::vec3 position_plane);
+    int tick();
+    int collision(glm::vec3 position_missile);
 
 private:
     VAO *object;

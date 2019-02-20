@@ -71,18 +71,23 @@ void Parachute::draw(glm::mat4 VP) {
   }
 }
 
-int Parachute::tick(glm::vec3 position_plane) {
-
-  this->position.y -= 0.1;
+int Parachute::collision(glm::vec3 position_missile)
+{
   if( !this->is_hit &&
-      fabs( fabs(this->position.x) - fabs(position_plane.x) ) < 3.0 &&
-      fabs( fabs(this->position.y) - fabs(position_plane.y) ) < 3.0 &&
-      fabs( fabs(this->position.z) - fabs(position_plane.z) ) < 3.0
+      fabs( fabs(this->position.x) - fabs(position_missile.x) ) < 5.0 &&
+      fabs( fabs(this->position.y) - fabs(position_missile.y) ) < 5.0 &&
+      fabs( fabs(this->position.z) - fabs(position_missile.z) ) < 5.0
     )
     {
 
-      return this->val;
+      this->is_hit = 1;
+      return 20;
     }
+  return 0;
+}
+int Parachute::tick() {
+
+  // this->position.y -= 0.1;
 
   this->box.x = this->position.x;
   this->box.y = this->position.y;
